@@ -10,45 +10,58 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "trees.h"
+#include "../trees.h"
+#include <unistd.h>
+#include <stdlib.h>
 
-
-int check_input_char(char c)
+int	quotes(char *cmd)
 {
-    if (c == '\'' || c == "\"")
+	while (*cmd)
+	{
+		if (*cmd == '\"')
+			cmd = ft_strchr(cmd + 1, '\"');
+		if (cmd == NULL)
+			return (0);
+		if (*cmd == '\'')
+			cmd = ft_strchr(cmd + 1, '\'');
+		if (cmd == NULL)
+			return (0);
+		++cmd;
+	}
+	return (1);
+}
+
+/*int check_input_char(char c)
+{
+    if (c == '\'' || c == '"')
         return QA;
     if (c == '<' || c == '>')
         return RD;
     if (c == '|')
         return PIPE;
     else
-        return 0;
+        return */
+
+char    *tokenize_internal(char *input, char *begin, char *end, t_list **chunks)
+{
+        char    *token;
+        t_list   *temp;
+
+        token = ft_substr(input, begin - input, end - begin + 1);
+        temp = ft_lstnew(token);
+        ft_lstadd_back(chunks, temp);
+        return (end + 1);
 }
 
-t_token *ft_string_handl(t_token **tok, char *str, int *i)
+void    tokenizer(char *input, t_list **chunks)
 {
-
-}
-
-t_token *ft_pipe_handl(t_token **tok, char *str, int *i)
-{
-
-}
-
-t_token *ft_rd_handl(t_token **tok, char *str, int *i)
-{
-
-}
-
-t_token *tokenizer(char *input, t_token **tok)
-{
-   	char    *begin;
+        char    *begin;
         char    *end;
 
         begin = input;
         while (*begin)
         {
-                while (ft_isspace(*begin))
+                while (*begin == ' ')
                         ++begin;
                 end = begin;
                 while (*end && !ft_strchr(" ><|", *begin))
@@ -69,18 +82,23 @@ t_token *tokenizer(char *input, t_token **tok)
         }
 }
 
-int main(int argc, char const *argv[])
+int main()
 {
     char    *rl;
-    t_token *tok;
+    t_list	*syntax;
+    syntax = NULL;
 
     while (1)
     {
         rl = readline("mini>");
         if (!rl)
-            return (free(rl));
+            return (free(rl), 1);
+	if (!quotes(rl))
+		puts("quotes error");
         add_history(rl);
-        tokenizer(rl, &tok);
+      	tokenizer(rl, &syntax);
+	puts(syntax->content);
+	exit(0);
     }
     return 0;
 }

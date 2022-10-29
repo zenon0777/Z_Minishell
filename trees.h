@@ -12,11 +12,18 @@
 
 #ifndef TREES_H
 #define TREES_H
+#include"libft/libft.h"
+#include <stdlib.h>
+#include <string.h>
+#include<readline/readline.h>
+#include<readline/history.h>
+#include <unistd.h>
+
 
 typedef struct astrees
 {
-    enum type{ RD, CMD, PIPE, QA };
-    union
+    //enum type{ RD, CMD, PIPE, QA };
+    union tree
     {
         char    *tokens;
         struct
@@ -35,10 +42,13 @@ typedef struct token_s
     char    *text;
 }   t_token;
 
-typedef struct  lst
+typedef struct  syntax
 {
-    t_astrees   *syntax;
+    char   *syntax;
     struct lst  *next;
-}   t_lst;
+}   t_syntax;
+
+void	tokenizer(char *input, t_list **chunks);
+int check_input_char(char c);
 
 #endif
