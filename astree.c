@@ -42,17 +42,31 @@ t_token *ft_rd_handl(t_token **tok, char *str, int *i)
 
 t_token *tokenizer(char *input, t_token **tok)
 {
-    int i = 0;
-    while(input[i])
-    {
-        if (check_input_char(input[i]) == QA || check_input_char(input[i]) == 0)
-            ft_string_handl(&tok, input, &i);
-        else if (check_input_char(input[i]) == RD)
-            ft_rd_handl(&tok, input, &i);
-        else if (check_input_char(input[i]) == PIPE)
-            ft_pipe_handl(&tok, input, &i);
-        i++;
-    }   
+   	char    *begin;
+        char    *end;
+
+        begin = input;
+        while (*begin)
+        {
+                while (ft_isspace(*begin))
+                        ++begin;
+                end = begin;
+                while (*end && !ft_strchr(" ><|", *begin))
+                {
+                        if (ft_strchr("\'\"", *end))
+                                end = ft_strchr(end + 1, *end);
+                        if (ft_strchr("><|", *(end + 1))
+                                || (*end != '\\' && *(end + 1) == ' '))
+                                break ;
+                        ++end;
+                }
+                if (!*end)
+                        --end;
+                if (*begin && *begin == *(begin + 1) && ft_strchr("><", *begin))
+                        ++end;
+                if (*begin)
+                        begin = tokenize_internal(input, begin, end, chunks);
+        }
 }
 
 int main(int argc, char const *argv[])
