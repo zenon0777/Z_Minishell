@@ -19,22 +19,18 @@
 #include<readline/history.h>
 #include <unistd.h>
 
+#define PIPE 0
+#define CMD 2
+#define RD 1
 
 typedef struct astrees
 {
-    //enum type{ RD, CMD, PIPE, QA };
-    union tree
-    {
-        char    *tokens;
-        struct
-        {
-            struct astrees *left;
-            struct astrees *right;
-        }ast_node;
-        
-    } tree;
-
-}   t_astrees;
+//    enum type{ RD, CMD, PIPE, QA };
+   char    *cmd;
+   struct astrees *left;
+   struct astrees *right;
+   int		type;
+}   t_ast;
 
 typedef struct environment
 {
@@ -54,7 +50,7 @@ typedef struct token_s
 typedef struct  syntax
 {
     char   *syntax;
-    struct lst  *next;
+    struct syntax  *next;
 }   t_syntax;
 
 void	tokenizer(char *input, t_list **chunks);
@@ -65,5 +61,8 @@ void	env_env(t_env *env);
 void	ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env	*ft_lstnew_env(char *name, char *value);
 void	ft_free_lst_env(t_env **head);
+t_ast   *ast_fill(t_list *lst, t_ast *syntax);
+t_ast *d_add_node(t_ast *ast, t_ast *node);
+t_ast *d_new_node(char *str);
 
 #endif

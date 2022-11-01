@@ -4,7 +4,7 @@ CC= gcc
 
 CFLAGS= -Wall -Wextra -Werror
 
-CFILES = astree.c env.c ft_environment.c utils.c ft_lst_env.c
+CFILES = astree.c astree_fill.c  env.c ft_environment.c utils.c ft_lst_env.c
 
 OFILES = $(addprefix $(OBJ_DIR)/,$(CFILES:.c=.o))
 

@@ -85,6 +85,7 @@ void    tokenizer(char *input, t_list **chunks)
 int main(int    ac, char **av, char **envp)
 {
     char    *rl;
+    t_ast	*ast;
     t_list	*syntax;
     t_env       *env;
     syntax = NULL;
@@ -105,10 +106,12 @@ int main(int    ac, char **av, char **envp)
                 free(rl);
                 rl_on_new_line();
                 rl_redisplay();
+		continue ;
         }
         //ft_expand(rl, env);
       	tokenizer(rl, &syntax);
-	env_env(env);
+//	env_env(env);
+	ast = ast_fill(syntax, ast);
     }
     return 0;
 }
