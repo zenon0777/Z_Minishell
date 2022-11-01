@@ -82,6 +82,21 @@ void    tokenizer(char *input, t_list **chunks)
         }
 }
 
+void ast_print(t_ast *ast)
+{
+	printf("root : %s", ast->cmd);
+	if (ast->left)
+	{
+		printf("left : %s", ast->cmd);
+		ast_print(ast->left);
+	}
+	if (ast->right)
+	{
+		printf("right : %s", ast->cmd);
+		ast_print(ast->right);
+	}
+}
+
 int main(int    ac, char **av, char **envp)
 {
     char    *rl;
@@ -90,10 +105,12 @@ int main(int    ac, char **av, char **envp)
     t_env       *env;
     syntax = NULL;
     (void)ac;
+    (void)envp;
     (void)av;
 
     env = NULL;
-    env = ft_environment(envp, env);
+    ast = NULL;
+   // env = ft_environment(envp, env);
     while (1)
     {
         rl = readline("mini>");
@@ -110,8 +127,10 @@ int main(int    ac, char **av, char **envp)
         }
         //ft_expand(rl, env);
       	tokenizer(rl, &syntax);
-//	env_env(env);
+	env_env(env);
 	ast = ast_fill(syntax, ast);
+	puts("here");
+//	ast_print(ast);
     }
     return 0;
 }
