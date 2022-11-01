@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 10:51:38 by adaifi            #+#    #+#             */
-/*   Updated: 2022/10/27 19:14:28 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/10/31 19:00:40 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,23 +82,33 @@ void    tokenizer(char *input, t_list **chunks)
         }
 }
 
-int main()
+int main(int    ac, char **av, char **envp)
 {
     char    *rl;
     t_list	*syntax;
+    t_env       *env;
     syntax = NULL;
+    (void)ac;
+    (void)av;
 
+    env = NULL;
+    env = ft_environment(envp, env);
     while (1)
     {
         rl = readline("mini>");
         if (!rl)
             return (free(rl), 1);
-	if (!quotes(rl))
-		puts("quotes error");
         add_history(rl);
+	if (!quotes(rl))
+        {
+		puts("quotes error");
+                free(rl);
+                rl_on_new_line();
+                rl_redisplay();
+        }
+        //ft_expand(rl, env);
       	tokenizer(rl, &syntax);
-	puts(syntax->content);
-	exit(0);
+	env_env(env);
     }
     return 0;
 }
