@@ -4,7 +4,7 @@ CC= gcc
 
 CFLAGS= -Wall -Wextra -Werror
 
-CFILES = astree.c astree_fill.c  env.c ft_environment.c utils.c ft_lst_env.c
+CFILES = astree.c astree_fill.c  env.c ft_environment.c utils.c ft_lst_env.c 
 
 OFILES = $(addprefix $(OBJ_DIR)/,$(CFILES:.c=.o))
 
@@ -19,7 +19,7 @@ INC= trees.h
 all: $(NAME)
 
 $(NAME) : $(OBJ_DIR) $(OFILES) $(LIBFT)
-	        @$(CC) $(OFILES) $(LIBFT) -L readline/lib -lreadline -o $(NAME)
+	        @$(CC) $(OFILES) $(LIBFT) -L readline/lib -lreadline -fsanitize=address -o $(NAME)
 		        @echo "minishell ok"
 
 $(OBJ_DIR):

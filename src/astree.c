@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 10:51:38 by adaifi            #+#    #+#             */
-/*   Updated: 2022/10/31 19:00:40 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/02 19:48:14 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,17 +84,27 @@ void    tokenizer(char *input, t_list **chunks)
 
 void ast_print(t_ast *ast)
 {
-	printf("root : %s", ast->cmd);
+	printf("root : %s\n", ast->cmd);
 	if (ast->left)
 	{
-		printf("left : %s", ast->cmd);
+		printf("left of : %s\n", ast->cmd);
 		ast_print(ast->left);
 	}
 	if (ast->right)
 	{
-		printf("right : %s", ast->cmd);
+		printf("right of : %s\n\n", ast->cmd);
 		ast_print(ast->right);
 	}
+}
+
+void    ast_free(t_ast *ast)
+{
+        t_ast *tmp =ast;
+        free(ast);
+        if (tmp->left)
+                ast_free(tmp->left);
+        if (tmp->right)
+                ast_free(tmp->right);
 }
 
 int main(int    ac, char **av, char **envp)
@@ -127,10 +137,9 @@ int main(int    ac, char **av, char **envp)
         }
         //ft_expand(rl, env);
       	tokenizer(rl, &syntax);
-	env_env(env);
 	ast = ast_fill(syntax, ast);
-	puts("here");
-//	ast_print(ast);
+        ast_print(ast);
+        ast_free(ast);
     }
     return 0;
 }
