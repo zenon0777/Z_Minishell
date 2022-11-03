@@ -2,14 +2,14 @@
 
 t_ast	*d_add_redir(t_ast *ast, t_ast *node)
 {
-	if (node->type == RD)
+	if (ast->type == RD)
 	{
-		if (ast->right == NULL)
-			ast->right = d_add_node(ast->right, node);
-		else
+		if (ast->right != NULL)
 			ast->left = d_add_node(ast->left, node);
+		else
+			ast->right = d_add_node(ast->right, node);
 	}
-	if (node->type == PIPE)
+	if (ast->type == PIPE)
 	{
 		if (ast->right != NULL)
 			ast->left = d_add_node(ast->left, node);
@@ -27,18 +27,21 @@ t_ast	*d_add_node(t_ast *ast, t_ast *node)
 		return (node);
 	tree = ast;
 	if (node->type > tree->type)
-		tree->right = node;
+	{
+		ast->right = node;
+		tree = node;
+	}
 	else if (tree->type == node->type)
 	{
 		if (tree->type == PIPE)
 		{
 			ast->right = node;
-			tree = ast;
+			tree = node;
 		}
 		else
 			tree->right = d_add_node(tree->right, node);
 	}
-	else if (tree->type > node->type)
+	else
 		tree = d_add_redir(tree, node);
 	return (tree);
 }

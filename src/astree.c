@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 10:51:38 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/02 19:48:14 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/03 19:27:16 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,16 +97,6 @@ void ast_print(t_ast *ast)
 	}
 }
 
-void    ast_free(t_ast *ast)
-{
-        t_ast *tmp =ast;
-        free(ast);
-        if (tmp->left)
-                ast_free(tmp->left);
-        if (tmp->right)
-                ast_free(tmp->right);
-}
-
 int main(int    ac, char **av, char **envp)
 {
     char    *rl;
@@ -139,7 +129,6 @@ int main(int    ac, char **av, char **envp)
       	tokenizer(rl, &syntax);
 	ast = ast_fill(syntax, ast);
         ast_print(ast);
-        ast_free(ast);
     }
     return 0;
 }
