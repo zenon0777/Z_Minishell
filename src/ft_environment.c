@@ -5,15 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/06 10:57:18 by med-doba          #+#    #+#             */
-/*   Updated: 2022/10/30 20:52:45 by adaifi           ###   ########.fr       */
+/*   Created: 2022/11/04 07:00:13 by adaifi            #+#    #+#             */
+/*   Updated: 2022/11/04 07:00:32 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
-// => SHLEVEL ENV must be update
-#include "../trees.h"
+#include"../trees.h"
 
 void	ft_free_2d(char **ptr)
 {

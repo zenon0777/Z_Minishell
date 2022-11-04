@@ -1,6 +1,47 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   astree_fill.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/04 06:26:09 by adaifi            #+#    #+#             */
+/*   Updated: 2022/11/04 07:05:34 by adaifi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include"../trees.h"
 
-t_ast	*d_add_redir(t_ast *ast, t_ast *node)
+int	check_ast(t_ast *ast)
+{
+	if (ast->type == PIPE)
+	{
+		if (ast->left == NULL || ast->right == NULL)
+			return (0);
+	}
+	if (ast->type == RD)
+	{
+		if (ast->left == NULL)
+			return (0);
+	}
+	check_ast(ast->left);
+	check_ast(ast->right);
+	return (1);
+}
+
+void	free_ast(t_ast *ast)
+{
+	t_ast	*tree;
+
+	tree = ast;
+	free(ast);
+	if (ast->right)
+		free_ast(tree->right);
+	if (ast->left)
+		free_ast(tree->left);
+}
+
+t_ast	*d_add_redir_pipe(t_ast *ast, t_ast *node)
 {
 	if (ast->type == RD)
 	{
@@ -16,45 +57,45 @@ t_ast	*d_add_redir(t_ast *ast, t_ast *node)
 		else
 			ast->right = d_add_node(ast->right, node);
 	}
-	return ast;
+	return (ast);
 }
 
 t_ast	*d_add_node(t_ast *ast, t_ast *node)
 {
-	t_ast *tree;
-	
+	t_ast	*tree;
+
 	if (ast == NULL)
 		return (node);
 	tree = ast;
-	if (node->type > tree->type)
+	if (node->type < tree->type)
 	{
-		ast->right = node;
+		node->right = tree;
 		tree = node;
 	}
 	else if (tree->type == node->type)
 	{
 		if (tree->type == PIPE)
 		{
-			ast->right = node;
+			node->right = tree;
 			tree = node;
 		}
 		else
 			tree->right = d_add_node(tree->right, node);
 	}
 	else
-		tree = d_add_redir(tree, node);
+		tree = d_add_redir_pipe(tree, node);
 	return (tree);
 }
 
 t_ast	*d_new_node(char *str)
 {
-	t_ast *ast;
+	t_ast	*ast;
+
 	ast = (t_ast *)malloc(sizeof(t_ast));
-	
 	if (ast == NULL)
-		return NULL;
-	if (!ft_strncmp(str, ">", 2) || !ft_strncmp(str, ">>", 3) || !ft_strncmp(str, "<", 2)
-			|| !ft_strncmp(str, "<<", 3))
+		return (NULL);
+	if (!ft_strncmp(str, ">", 2) || !ft_strncmp(str, ">>", 3)
+		|| !ft_strncmp(str, "<", 2) || !ft_strncmp(str, "<<", 3))
 		ast->type = RD;
 	else if (!ft_strncmp(str, "|", 2))
 			ast->type = PIPE;
@@ -65,15 +106,13 @@ t_ast	*d_new_node(char *str)
 	ast->right = NULL;
 	return (ast);
 }
-			
-		
 
 t_ast	*ast_fill(t_list *lst, t_ast *syntax)
 {
-	t_ast *st;
+	t_ast	*st;
 
-	st =NULL;
-	while(lst)
+	st = NULL;
+	while (lst)
 	{
 		syntax = d_new_node(lst->content);
 		st = d_add_node(st, syntax);
