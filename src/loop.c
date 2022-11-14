@@ -1,5 +1,20 @@
 #include "../minishell.h"
 
+void	ast_print(t_as *ast)
+{
+	printf("root : %s\n", ast->cmd);
+	if (ast->left)
+	{
+		printf("left of : %s\n", ast->cmd);
+		ast_print(ast->left);
+	}
+	if (ast->right)
+	{
+		printf("right of : %s\n\n", ast->cmd);
+		ast_print(ast->right);
+	}
+}
+
 int	quotes(char *cmd)
 {
 	while (*cmd)
@@ -38,26 +53,25 @@ bool   set_rl(char *input, char *output, int fd, bool nl)
 
 void    loop(char *input, t_list *chunks, t_as *syntax, t_env *envmap)
 {
+	t_fds	fd;
+	t_list	*tmp = NULL;
+
     while (1)
     {
-        ft_free((void **)&input);
-        input = readline("SHELL_BREACK > ");
-        if (!input)
-        {
-            ft_putendl_fd("exit", STDOUT_FILENO);
-            exit(0);
-        }
+		tmp = NULL;
+        input = readline("SHELL_BREAK > ");
+        // if (!input && set_rl(input, "", STDERR_FILENO, false))
+		// 	continue ;
         add_history(input);
-        /* need check value of quotes */
         if (!quotes(input) && set_rl(input, "Quotes not paired", STDERR_FILENO, false))
             continue;
         input = expand(input, envmap, false);
-        /* need check value of input */
         tokenizer(input, &chunks);
-        /* need check value of chunks */
         syntax = ast_fill(chunks, syntax);
+		ast_print(syntax);
         if (!check_ast(syntax) && set_rl(input, "Syntax error", STDERR_FILENO, false))
             continue ;
-        // check_cmd(&envmap, chunks, &fd);
+        ft_free((void **)&input);
+        check_cmd(&envmap, chunks, &fd);
     }
 }

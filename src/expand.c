@@ -105,30 +105,30 @@ char	*expand_middle(char *input, char *it, char *last, t_env *envmap)
 	return (expand_brace(brace));
 }
 
-char *removeChar(char *str)
-{
-    int		i;
-	int		j;
-    int		len;
-    char	*tmp;
+// char *removeChar(char *str)
+// {
+//     int		i;
+// 	int		j;
+//     int		len;
+//     char	*tmp;
 
-	len = strlen(str);
-    tmp = ft_strdup(str);
-	i = 0;
-    while (i < len)
-	{
-		if (tmp[i] == '\'' || tmp[i] == '\"')
-		{
-			j = i;
-			while (j < len)
-				j++;
-			len--;
-			i--;
-		}
-		i++;
-	}
-    return(tmp);
-}
+// 	len = strlen(str);
+//     tmp = ft_strdup(str);
+// 	i = 0;
+//     while (i < len)
+// 	{
+// 		if (tmp[i] == '\'' || tmp[i] == '\"')
+// 		{
+// 			j = i;
+// 			while (j < len)
+// 				tmp[j++] = tmp[j+1];
+// 			len--;
+// 			i--;
+// 		}
+// 		i++;
+// 	}
+//     return(tmp);
+// }
 
 char	*expand_internal(char *input, char *it, bool d_quote, t_env *envmap)
 {
@@ -149,7 +149,6 @@ char	*expand_internal(char *input, char *it, bool d_quote, t_env *envmap)
 	input = ft_strjoin(former, latter);
 	ft_free((void **)(&latter));
 	ft_free((void **)(&former));
-	input = removeChar(input);
 	return (input);
 }
 char	*expand(char *input, t_env *envmap, bool d_quote)

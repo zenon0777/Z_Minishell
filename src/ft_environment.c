@@ -6,21 +6,11 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 07:00:13 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/14 09:29:19 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/14 17:51:13 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../minishell.h"
-
-void	ft_free_2d(char **ptr)
-{
-	int	i;
-
-	i = 0;
-	while (ptr[i])
-		free(ptr[i++]);
-	free(ptr);
-}
 
 t_env	*ft_environment(char **envp, t_env *env)
 {

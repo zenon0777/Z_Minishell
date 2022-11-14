@@ -2,18 +2,20 @@
 
 int	check_ast(t_as *ast)
 {
-	t_as *tmp;
-
-	tmp = ast;
-	if (ast->type == PIPE || ast->type == RD)
+	if (ast->type == PIPE)
 	{
 		if (ast->left == NULL || ast->right == NULL)
 			return (0);
 	}
+	if (ast->type == RD)
+	{
+		if (ast->left == NULL)
+			return (0);
+	}
 	if (ast->left != NULL)
-		check_ast(tmp->left);
-	if (ast->right != NULL)
-		check_ast(tmp->right);
+		check_ast(ast->left);
+	if (ast->right)
+		check_ast(ast->right);
 	return (1);
 }
 
@@ -98,15 +100,16 @@ t_as	*d_new_node(char *str)
 t_as	*ast_fill(t_list *lst, t_as *syntax)
 {
 	t_as	*st;
-	t_list	*tmp;
 
 	st = NULL;
-	tmp = lst;
-	while (tmp)
+	if (lst == NULL)
+		return (NULL);
+	while (lst)
 	{
-		syntax = d_new_node(tmp->content);
+		puts("here1");
+		syntax = d_new_node(lst->content);
 		st = d_add_node(st, syntax);
-		tmp = tmp->next;
+		lst = lst->next;
 	}
 	return (st);
 }

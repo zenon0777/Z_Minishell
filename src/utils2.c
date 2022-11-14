@@ -1,18 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 14:30:18 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/14 17:51:24 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/14 17:42:45 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_env	*ft_list_new1(char *key, char *value)
+void	ft_free_2d(char **ptr)
+{
+	int	i;
+
+	i = 0;
+	while (ptr[i])
+		free(ptr[i++]);
+	free(ptr);
+}
+
+t_env	*ft_lst_new1(char *key, char *value)
 {
 	t_env	*lst;
 
@@ -25,7 +35,7 @@ t_env	*ft_list_new1(char *key, char *value)
 	return (lst);
 }
 
-void	ft_listadd_back_prime(t_env **lst, t_env *node)
+void	ft_lstadd_back_prime(t_env **lst, t_env *node)
 {
 	t_env	*head;
 
@@ -40,4 +50,48 @@ void	ft_listadd_back_prime(t_env **lst, t_env *node)
 			head = head->next;
 		head->next = node;
 	}
+}
+
+char	*get_keys(char *str, int c)
+{
+	char	*h;
+	char	a;
+	int		j;
+
+	h = str;
+	j = 0;
+	a = (char) c;
+	while (h[j] && h[j] != a)
+		j++;
+	if (h[j] + 1 == 0)
+		return (str);
+	else
+	{
+		h[j] = 0;
+		return (h);
+	}
+	return (str);
+}
+
+int	ft_multiple_check(char *arg)
+{
+	int		i;
+
+	i = 1;
+	while (arg[i])
+	{
+		if ((arg[0] == '>' || arg[0] == '|' || arg[0] == '<'))
+			return (2);
+		if (!ft_isalpha(arg[0]) || arg[i] == ' ')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	check_upper(char *str)
+{
+	if (str[0] >= 'A' && str[0] <= 'Z')
+		return (1);
+	return (0);
 }

@@ -1,5 +1,6 @@
 #include "../minishell.h"
 
+struct VAR	var;
 void	new_prompt(int sig)
 {
 	(void)sig;
