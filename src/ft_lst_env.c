@@ -6,11 +6,11 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 12:54:37 by med-doba          #+#    #+#             */
-/*   Updated: 2022/10/30 20:59:07 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/14 09:29:31 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../trees.h"
+#include "../minishell.h"
 
 void	ft_lstadd_back_env(t_env **lst, t_env *new)
 {

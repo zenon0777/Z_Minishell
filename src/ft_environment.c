@@ -6,11 +6,11 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 07:00:13 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/04 07:00:32 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/14 09:29:19 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"../trees.h"
+#include"../minishell.h"
 
 void	ft_free_2d(char **ptr)
 {

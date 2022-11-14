@@ -6,13 +6,13 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 14:30:18 by adaifi            #+#    #+#             */
-/*   Updated: 2022/10/30 20:54:05 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/14 09:02:03 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../trees.h"
+#include "../minishell.h"
 
-t_env	*ft_lst_new1(char *key, char *value)
+t_env	*ft_list_new1(char *key, char *value)
 {
 	t_env	*lst;
 
@@ -25,7 +25,7 @@ t_env	*ft_lst_new1(char *key, char *value)
 	return (lst);
 }
 
-void	ft_lstadd_back_prime(t_env **lst, t_env *node)
+void	ft_listadd_back_prime(t_env **lst, t_env *node)
 {
 	t_env	*head;
 

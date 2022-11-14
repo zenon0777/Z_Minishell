@@ -4,7 +4,7 @@ CC= gcc
 
 CFLAGS= -Wall -Wextra -Werror
 
-CFILES = astree.c astree_fill.c  env.c ft_environment.c utils.c ft_lst_env.c 
+CFILES = as_tree.c ft_environment.c expand.c loop.c tokenize.c minishell.c env.c shared.c ft_lst_env.c
 
 OFILES = $(addprefix $(OBJ_DIR)/,$(CFILES:.c=.o))
 
@@ -14,23 +14,23 @@ SRC_DIR = ./src
 
 LIBFT = libft/libft.a
 
-INC= trees.h
+INC= minishell.h
 
 all: $(NAME)
 
 $(NAME) : $(OBJ_DIR) $(OFILES) $(LIBFT)
-	        @$(CC) $(OFILES) $(LIBFT) -L readline/lib -lreadline -fsanitize=address -o $(NAME)
+	        @$(CC) $(OFILES) $(LIBFT) -L $(shell brew --prefix readline)/lib -lreadline -o $(NAME)
 		        @echo "minishell ok"
 
 $(OBJ_DIR):
 	        @mkdir obj
 
 $(OFILES): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(INC)
-	        @$(CC) -c $(CFLAGS) -I readline/include -c $< -o $@
+	        @$(CC) -c $(CFLAGS) -I $(shell brew --prefix readline)/include -c $< -o $@
 
 $(LIBFT): force
 	        @make -C libft
-		@make bonus -C libft
+			@make bonus -C libft
 	
 force:
 
