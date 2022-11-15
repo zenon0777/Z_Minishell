@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 17:00:32 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/15 11:37:13 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/15 14:05:03 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,18 @@ void	export_env(t_env **env, t_list *arg)
 	lst = (*env);
 	ft_sort_env(env);
 	if (arg->next && ft_multiple_check(arg->next->content))
-	{
-		// if (arg->next->ch == '"' || arg->next->ch == '\'')
 			return (ft_putendl_fd("Error: not a valid identifier", 2));
-	}
 	if (!arg->next || ft_multiple_check(arg->next->content) == 2)
 		return (ft_print_exported(env));
-	while (arg)
+	while (arg && arg->next)
 	{
-		lst = (*env);
-		
+		lst = *env;
 		set_env_existed(env, arg, &lst);
 		// if (arg->flag == 1)
 		// 	arg = arg->next;
 		if ((*env) == NULL)
 		{
-			(*env) = lst;
+			*env = lst;
 			ft_add_export(arg->next->content, env);
 		}
 		arg = arg->next;
@@ -46,11 +42,11 @@ void	set_env_existed(t_env **env, t_list *arg, t_env **lst)
 {
 	char	*key;
 	char	*value;
-	t_env	**tmp;
+	t_env	*tmp;
 	char	*s;
 
-	tmp = env;
-	while ((*env) && arg->next)
+	tmp = *env;
+	while ((*env) && arg && arg->next)
 	{
 		s = ft_strchr(arg->next->content, '+');
 		key = get_keys(arg->next->content, '=');
@@ -68,14 +64,13 @@ void	set_env_existed(t_env **env, t_list *arg, t_env **lst)
 		}
 		(*env) =(*env)->next;
 	}
-	env = tmp;
-	while ((*env) && arg->next)
+	*env = tmp;
+	while ((*env) && (arg && arg->next))
 	{
 		key = get_keys(arg->next->content, '=');
 		if (!ft_strcmp(key, (*env)->key))
 		{
 			value = (*env)->value;
-			free(value);
 			(*env)->value = ft_strdup(ft_strchr(arg->next->content, '=') + 1);
 			*env = *lst;
 			return ;
@@ -161,4 +156,5 @@ void	ft_add_export(char *str, t_env **env)
 		return (var.exit_status = 1, ft_putendl_fd("Export : error", 2));
 	lst = ft_lst_new1(key, value);
 	ft_lstadd_back_prime(env, lst);
+	puts("hi");
 }

@@ -4,9 +4,10 @@ int	check_ast(t_as *ast)
 {
 	if (ast->type == PIPE)
 	{
-		if (ast->left == NULL || ast->right == NULL || ast->right->type == PIPE
-			|| ast->left->type == PIPE)
+		if ((ast->left == NULL || ast->right == NULL))
 			return (0);
+		if (ast->left->type == PIPE || ast->right->type == PIPE)
+			return 0;
 	}
 	if (ast->type == RD)
 	{
@@ -25,11 +26,11 @@ void	free_ast(t_as *ast)
 	t_as	*tree;
 
 	tree = ast;
-	free(ast);
-	if (ast->right)
+	if (tree->right)
 		free_ast(tree->right);
-	if (ast->left)
+	if (tree->left)
 		free_ast(tree->left);
+	free(ast);
 }
 
 t_as	*d_add_redir_pipe(t_as *ast, t_as *node)

@@ -20,7 +20,7 @@ INC= minishell.h
 all: $(NAME)
 
 $(NAME) : $(OBJ_DIR) $(OFILES) $(LIBFT)
-	        @$(CC) $(OFILES) $(LIBFT) -L $(shell brew --prefix readline)/lib -lreadline -fsanitize=address -o  $(NAME)
+	        @$(CC) $(OFILES) $(LIBFT) -L $(shell brew --prefix readline)/lib -lreadline -o  $(NAME)
 		        @echo "minishell ok"
 
 $(OBJ_DIR):

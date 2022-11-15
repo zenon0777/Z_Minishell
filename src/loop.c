@@ -54,27 +54,33 @@ bool   set_rl(char *input, char *output, int fd, bool nl)
 void    loop(char *input, t_list *chunks, t_as *syntax, t_env *envmap)
 {
 	t_fds	fd;
-	t_list	*tmp = NULL;
 
 	while (1)
     {
-		tmp = NULL;
+		chunks = NULL;
+		syntax = NULL;
         input = readline("SHELL_BREAK > ");
-        // if (!input && set_rl(input, "", STDERR_FILENO, false))
-		// 	continue ;
+        if (!input && set_rl(input, "", STDERR_FILENO, false))
+			continue ;
         add_history(input);
         if (!quotes(input) && set_rl(input, "Quotes not paired", STDERR_FILENO, false))
             continue;
         input = expand(input, envmap, false);
+		input = removeChar(input);
         tokenizer(input, &chunks);
         syntax = ast_fill(chunks, syntax);
-        if (!check_ast(syntax) && set_rl(input, "Syntax error", STDERR_FILENO, false))
+        if (syntax && (!check_ast(syntax) && set_rl(input, "Syntax error", STDERR_FILENO, false)))
+		{
+			free_ast(syntax);
+			ft_free_lst(&chunks);
             continue ;
+		}
 		// ast_print(syntax);
         check_cmd(&envmap, chunks, &fd);
 		if (syntax)
 			free_ast(syntax);
 		if (chunks)
-			ft_lstclear(&chunks, (void *)free);
-    }
+			ft_free_lst(&chunks);
+		free(input);
+	}
 }

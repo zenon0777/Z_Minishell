@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 19:38:47 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/15 11:07:57 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/15 13:47:38 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 char	*redirection_handler(t_list **arg, t_fds *fds, char *str)
 {
+	char	*s;
+
 	while ((*arg) && ft_strcmp((*arg)->content, "|"))
 	{
 		if (!ft_strncmp((*arg)->content, "<", 1))
@@ -22,12 +24,12 @@ char	*redirection_handler(t_list **arg, t_fds *fds, char *str)
 			output(arg, fds);
 		else
 		{
-			str = ft_strjoin(str, (*arg)->content);
-			str = ft_strjoin(str, " ");
+			s = ft_strjoin_custom(str, (*arg)->content);
+			s = ft_strjoin_custom(s, " ");
 		}
 		(*arg) = (*arg)->next;
 	}
-	return (str);
+	return (s);
 }
 
 void	content_handler(t_list **arg, t_env **env, t_fds *fds)
