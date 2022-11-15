@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:32:48 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/14 17:54:49 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/15 10:57:29 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	check_type(char *arg)
 {
+	// tolower
 	if (arg == NULL)
 		return (0);
 	if (!ft_strcmp(arg, "pwd"))

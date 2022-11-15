@@ -4,7 +4,8 @@ int	check_ast(t_as *ast)
 {
 	if (ast->type == PIPE)
 	{
-		if (ast->left == NULL || ast->right == NULL)
+		if (ast->left == NULL || ast->right == NULL || ast->right->type == PIPE
+			|| ast->left->type == PIPE)
 			return (0);
 	}
 	if (ast->type == RD)
@@ -106,7 +107,6 @@ t_as	*ast_fill(t_list *lst, t_as *syntax)
 		return (NULL);
 	while (lst)
 	{
-		puts("here1");
 		syntax = d_new_node(lst->content);
 		st = d_add_node(st, syntax);
 		lst = lst->next;

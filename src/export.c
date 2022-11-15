@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 17:00:32 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/14 17:24:45 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/15 11:37:13 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,20 @@ void	export_env(t_env **env, t_list *arg)
 
 	lst = (*env);
 	ft_sort_env(env);
-	// if (arg->next && ft_multiple_check(arg->next->content))
-	// {
-	// 	if (arg->next->ch == '"' || arg->next->ch == '\'')
-	// 		return (ft_putendl_fd("Error: not a valid identifier", 2));
-	// }
+	if (arg->next && ft_multiple_check(arg->next->content))
+	{
+		// if (arg->next->ch == '"' || arg->next->ch == '\'')
+			return (ft_putendl_fd("Error: not a valid identifier", 2));
+	}
 	if (!arg->next || ft_multiple_check(arg->next->content) == 2)
 		return (ft_print_exported(env));
 	while (arg)
 	{
 		lst = (*env);
+		
 		set_env_existed(env, arg, &lst);
-		if (arg->flag == 1)
-			arg = arg->next;
+		// if (arg->flag == 1)
+		// 	arg = arg->next;
 		if ((*env) == NULL)
 		{
 			(*env) = lst;

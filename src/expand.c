@@ -9,7 +9,7 @@ char	*getvalue(char *key, t_env *envmap)
 	value = NULL;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->key, key, ft_strlen(key)))
+		if (!ft_strcmp(tmp->key, key))
 		{
 			value = tmp->value;
 			break;
@@ -24,7 +24,7 @@ char	*expand_last(char *it)
 	if (*it && ft_strchr("$?", *it))
 		++it;
 	else
-		while (*it && !ft_strchr(" ><\'\"|?$", *it))
+		while (*it && ft_isalnum(*it))
 			++it;
 	return (it);
 }
@@ -78,7 +78,7 @@ char	*expand_brace(t_list *brace)
 		if (ret == false)
             exit (0); 
 	}
-	ft_lstclear(&origin, (void *)ft_free);
+	ft_lstclear(&origin, (void *)free);
 	return (middle);
 }
 

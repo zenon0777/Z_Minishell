@@ -56,7 +56,7 @@ void    loop(char *input, t_list *chunks, t_as *syntax, t_env *envmap)
 	t_fds	fd;
 	t_list	*tmp = NULL;
 
-    while (1)
+	while (1)
     {
 		tmp = NULL;
         input = readline("SHELL_BREAK > ");
@@ -68,10 +68,13 @@ void    loop(char *input, t_list *chunks, t_as *syntax, t_env *envmap)
         input = expand(input, envmap, false);
         tokenizer(input, &chunks);
         syntax = ast_fill(chunks, syntax);
-		ast_print(syntax);
         if (!check_ast(syntax) && set_rl(input, "Syntax error", STDERR_FILENO, false))
             continue ;
-        ft_free((void **)&input);
+		// ast_print(syntax);
         check_cmd(&envmap, chunks, &fd);
+		if (syntax)
+			free_ast(syntax);
+		if (chunks)
+			ft_lstclear(&chunks, (void *)free);
     }
 }

@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 19:38:47 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/14 17:21:39 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/15 11:07:57 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,7 @@ void	content_handler(t_list **arg, t_env **env, t_fds *fds)
 	tmp_out = dup(1);
 	str = redirection_handler(arg, fds, str);
 	if (*str == '\0')
-	{
-		puts("h");
 		return (printf("command not found\n"), var.exit_status = 127, free(str));
-	}
 	dup2(tmp_in, STDIN_FILENO);
 	dup2(tmp_out, STDOUT_FILENO);
 	close(tmp_in);

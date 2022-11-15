@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 14:30:18 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/14 17:42:45 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/15 09:49:53 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	ft_lstadd_back_prime(t_env **lst, t_env *node)
 	}
 	else
 	{
-		while (head->next)
+		while (head && head->next)
 			head = head->next;
 		head->next = node;
 	}
