@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 19:38:47 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/16 23:27:49 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/17 00:35:06 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	execute_redir(t_list *arg, t_env **env, t_fds *fds, char *str)
 	cmd = ft_split(str, ' ');
 	while (cmd[i])
 	{
-		cmd[i] = ft_strtrim(cmd[i], "\"\'");
+		cmd[i] = removeChar(cmd[i]);
 		i++;
 	}
 	tmp_in = dup(0);

@@ -105,34 +105,46 @@ char	*expand_middle(char *input, char *it, char *last, t_env *envmap)
 	return (expand_brace(brace));
 }
 
-char	*removeChar(char *str)
+char    quotes_type(char *arg)
 {
-    int		i;
-	int		j;
-    int		len;
-    char	*tmp;
+    char    key;
+    char    *tmp;
+    int        i;
 
-	len = strlen(str);
-    tmp = ft_strdup(str);
-	i = 0;
-	while (i < len)
-	{
-		while (tmp[i] == '\'')
-		 	i++;
-		if (tmp[i] == '\"')
-		{
-			j = i;
-			while (j < len)
-			{
-				tmp[j] = tmp[j + 1];
-				j++;
-			}
-			len--;
-			i--;
-		}
-		i++;
-	}
-    return(tmp);
+    tmp = arg;
+    i = 0;
+    while (tmp[i])
+    {
+        if (tmp[i] == '\"' || tmp[i] == '\'')
+        {
+            if (tmp[i] == '\"')
+                key = 34;
+            else
+                key = 39;
+        }
+        i++;
+    }
+    return (key);
+}
+
+char    *removeChar(char *arg)
+{
+    char    *first;
+    char    *middle;
+    char    *fermer;
+    char    *end;
+    char    key;
+
+    middle = NULL;
+    end = NULL;
+    key = quotes_type(arg);
+    end = ft_strchr(ft_strchr(arg, key) + 1, key);
+    first = ft_substr(arg, 0, ft_strchr(arg, key) - arg);
+    middle = ft_substr(arg, ft_strchr(arg, key) - arg + 1, \
+            end - ft_strchr(arg, key) - 1);
+    fermer = ft_strjoin(first, middle);
+    fermer = ft_strjoin(fermer, end + 1);
+    return (fermer);
 }
 
 char	*expand_internal(char *input, char *it, bool d_quote, t_env *envmap)
