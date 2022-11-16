@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 17:00:32 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/15 14:05:03 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/16 10:20:39 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void	export_env(t_env **env, t_list *arg)
 {
 	t_env	*lst;
+	char	*value;
+	char	*key;
 
 	lst = (*env);
 	ft_sort_env(env);
@@ -26,12 +28,16 @@ void	export_env(t_env **env, t_list *arg)
 	{
 		lst = *env;
 		set_env_existed(env, arg, &lst);
-		// if (arg->flag == 1)
-		// 	arg = arg->next;
+ 		if (arg->flag == 1)
+			arg = arg->next;
 		if ((*env) == NULL)
 		{
+			value = ft_strchr(arg->next->content, '=');
+			if (value)
+				value = value + 1;
+			key = get_keys(arg->next->content, '=');
 			*env = lst;
-			ft_add_export(arg->next->content, env);
+			ft_add_export(key, value, env);
 		}
 		arg = arg->next;
 	}
@@ -46,36 +52,43 @@ void	set_env_existed(t_env **env, t_list *arg, t_env **lst)
 	char	*s;
 
 	tmp = *env;
-	while ((*env) && arg && arg->next)
+	while (*env && arg && arg->next)
 	{
 		s = ft_strchr(arg->next->content, '+');
-		key = get_keys(arg->next->content, '=');
+		key = get_keys(arg->next->content, '+');
 		if (!key || (ft_multiple_check(key) == 1 && ft_strcmp(key, "_")))
 			return (var.exit_status = 1, ft_putendl_fd("Error: export", 2));
 		if (!s)
-			return ;
+			break ;
 		if (s[0] == '+')
 		{
-			char *h = get_keys(arg->next->content, '+');
-			value = ft_strchr(arg->next->content, '+') + 2;
-			export_join(env, h, value);
+			value = s + 2;
+			export_join(env, key, value);
+			if (*env == NULL)
+			{
+				*env = *lst;
+				ft_add_export(key, value, env);
+				return ;
+			}
 			*env = *lst;
 			return ;
 		}
-		(*env) =(*env)->next;
+		*env =(*env)->next;
 	}
 	*env = tmp;
-	while ((*env) && (arg && arg->next))
+	while (*env && arg && arg->next)
 	{
 		key = get_keys(arg->next->content, '=');
-		if (!ft_strcmp(key, (*env)->key))
+		value = ft_strchr(arg->next->content, '=');
+		if (value)
+			value = value + 1;
+		if (!ft_strcmp(key, (*env)->key) && value)
 		{
-			value = (*env)->value;
-			(*env)->value = ft_strdup(ft_strchr(arg->next->content, '=') + 1);
+			(*env)->value = ft_strdup(value);
 			*env = *lst;
 			return ;
 		}
-		(*env) = (*env)->next;
+		*env = (*env)->next;
 	}
 }
 
@@ -144,17 +157,14 @@ void	ft_sort_env(t_env **env)
 	top = tmp;
 }
 
-void	ft_add_export(char *str, t_env **env)
+void	ft_add_export(char *key, char *value, t_env **env)
 {
-	char	*value;
-	char	*key;
 	t_env	*lst;
 
-	value = ft_strchr(str, '=') + 1;
-	key = get_keys(str, '=');
 	if (ft_multiple_check(key) == 1)
 		return (var.exit_status = 1, ft_putendl_fd("Export : error", 2));
 	lst = ft_lst_new1(key, value);
+	puts(lst->value);
+	puts(lst->key);
 	ft_lstadd_back_prime(env, lst);
-	puts("hi");
 }

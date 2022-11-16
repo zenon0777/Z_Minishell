@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 07:00:13 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/14 17:51:13 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/16 09:13:46 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ t_env	*ft_environment(char **envp, t_env *env)
 		node = ft_lstnew_env("SHLVL", "1");
 		ft_lstadd_back_env(&env, node);
 		node = ft_lstnew_env("_", "/usr/bin/env");
+		ft_lstadd_back_env(&env, node);
+		node = ft_lstnew_env("PATH", "/Users/adaifi/Desktop/parse");
 		ft_lstadd_back_env(&env, node);
 		return (env);
 	}

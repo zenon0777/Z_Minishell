@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 14:30:18 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/15 13:27:57 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/16 09:48:03 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ t_env	*ft_lst_new1(char *key, char *value)
 	if (!lst)
 		return (NULL);
 	lst->key = ft_strdup(key);
-	lst->value = ft_strdup(value);
+	if (value)
+		lst->value = ft_strdup(value);
+	else
+		lst->value = ft_strdup("");
 	lst->next = NULL;
 	return (lst);
 }
@@ -54,9 +57,7 @@ void	ft_lstadd_back_prime(t_env **lst, t_env *node)
 
 	head = *lst;
 	if (!head)
-	{
 		*lst = node;
-	}
 	else
 	{
 		while (head && head->next)
@@ -71,16 +72,16 @@ char	*get_keys(char *str, int c)
 	char	a;
 	int		j;
 
-	h = str;
+	h = ft_strdup(str);
 	j = 0;
 	a = (char) c;
 	while (h[j] && h[j] != a)
 		j++;
-	if (h[j] + 1 == 0)
+	if (h[j] + 1 == '\0')
 		return (str);
 	else
 	{
-		h[j] = 0;
+		h = ft_substr(str, 0, j);
 		return (h);
 	}
 	return (str);
@@ -95,7 +96,7 @@ int	ft_multiple_check(char *arg)
 	{
 		if ((arg[0] == '>' || arg[0] == '|' || arg[0] == '<'))
 			return (2);
-		if (!ft_isalpha(arg[0]) || arg[i] == ' ')
+		if (!ft_isalpha(arg[0]))
 			return (1);
 		i++;
 	}

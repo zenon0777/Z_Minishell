@@ -72,15 +72,15 @@ void    loop(char *input, t_list *chunks, t_as *syntax, t_env *envmap)
         if (syntax && (!check_ast(syntax) && set_rl(input, "Syntax error", STDERR_FILENO, false)))
 		{
 			free_ast(syntax);
-			ft_free_lst(&chunks);
+			ft_lstclear(&chunks, (void *)free);
             continue ;
 		}
 		// ast_print(syntax);
+		free(input);
         check_cmd(&envmap, chunks, &fd);
 		if (syntax)
 			free_ast(syntax);
 		if (chunks)
-			ft_free_lst(&chunks);
-		free(input);
+			ft_lstclear(&chunks, (void *)free);
 	}
 }

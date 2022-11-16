@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:32:48 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/15 10:57:29 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/15 17:27:41 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,15 @@ void	builting(t_env **env, t_list *arg)
 		env_env(*env);
 	else if (!ft_strcmp(arg->content, "exit"))
 	{
+		char	*s;
+		if (arg->next)
+			s = arg->next->content;
+		if (arg->next && ft_isalpha(s[0]))
+			return (ft_putendl_fd("invalide args", 2), exit(255));
 		if (!arg->next)
 			exit(var.exit_status);
 		else if (arg->next->next)
-			return (var.exit_status = 1, printf("too many args\n"), (void)arg);
+			return (var.exit_status = 1, ft_putendl_fd("too many args", 2));
 		else if (arg->next)
 			exit(ft_atoi(arg->next->content));
 	}

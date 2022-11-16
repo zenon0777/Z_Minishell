@@ -2,22 +2,24 @@
 
 int	check_ast(t_as *ast)
 {
+	t_as	*pre;
+
+	pre = ast->right;
 	if (ast->type == PIPE)
 	{
 		if ((ast->left == NULL || ast->right == NULL))
 			return (0);
-		if (ast->left->type == PIPE || ast->right->type == PIPE)
+		if (ast->right->type == PIPE && pre->right == NULL)
 			return 0;
 	}
 	if (ast->type == RD)
 	{
-		if (ast->left == NULL)
+		if (ast->left == NULL || (pre && pre->type == RD))
 			return (0);
 	}
-	if (ast->left != NULL)
-		check_ast(ast->left);
-	if (ast->right)
-		check_ast(ast->right);
+	if (ast->left != NULL && ast->right != NULL)
+		if (!check_ast(ast->left) || !check_ast(ast->right))
+			return 0;
 	return (1);
 }
 

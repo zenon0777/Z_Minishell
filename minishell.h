@@ -140,7 +140,7 @@ char	*get_next_line(int fd);
 void	update_pwd(t_env **lst, char *home);
 int		ft_multiple_check(char *arg);
 void	ft_print_exported(t_env **env);
-void	ft_add_export(char *str, t_env **env);
+void	ft_add_export(char *key, char *value, t_env **env);
 void	export_join(t_env **env, char *key, char *value);
 void	ft_sort_env(t_env **env);
 int		check_upper(char *str);

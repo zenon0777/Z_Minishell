@@ -23,6 +23,10 @@ $(NAME) : $(OBJ_DIR) $(OFILES) $(LIBFT)
 	        @$(CC) $(OFILES) $(LIBFT) -L $(shell brew --prefix readline)/lib -lreadline -o  $(NAME)
 		        @echo "minishell ok"
 
+debug : $(OBJ_DIR) $(OFILES) $(LIBFT)
+	        @$(CC) $(OFILES) $(LIBFT) -L $(shell brew --prefix readline)/lib -lreadline -fsanitize=address -o  $(NAME)
+		        @echo "minishell ok"
+
 $(OBJ_DIR):
 	        @mkdir obj
 

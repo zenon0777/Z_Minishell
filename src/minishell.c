@@ -34,11 +34,11 @@ void sign_handler(int sig)
 		signal(SIGINT, ctrl_c);
 		signal(SIGQUIT, back_slash);
 	}
-	if (sig == 3)
-	{
-		printf("exit\n");
-		exit(0);
-	}
+	// if (sig == 3)
+	// {
+	// 	printf("exit\n");
+	// 	exit(0);
+	// }
 	
 }
 
@@ -52,7 +52,7 @@ int main(int argc, char const *argv[], char *envp[])
 	(void)argc;
 	(void)argv;
 	envmap = ft_environment(envp, envmap);
-	signal(SIG_INT, sign_handler);
+	//signal(SIG_INT, sign_handler);
 	// rl_catch_signals = 0;
 	loop(input, chunks, syntax, envmap);
 	return 0;
