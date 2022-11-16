@@ -44,8 +44,8 @@ void	expand_space(char *value, t_list **brace)
 			break ;
 		*search++ = '\0';
 		append = ft_lstnew(ft_strdup(value));
-        if (append != NULL && append->content != NULL)
-            exit (0); 
+        // if (append != NULL && append->content != NULL)
+        //     exit(0); 
 		value = search;
 		ft_lstadd_back(brace, append);
 	}
@@ -72,11 +72,11 @@ char	*expand_brace(t_list *brace)
 	{
 		brace = brace->next;
 		ret = ft_strappend(&middle, " ");
-		if (ret == false)
-            exit (0); 
+		// if (ret == false)
+        //     exit (0); 
 		ret = ft_strappend(&middle, (char *)(brace->content));
-		if (ret == false)
-            exit (0); 
+		// if (ret == false)
+        //     exit (0); 
 	}
 	ft_lstclear(&origin, (void *)free);
 	return (middle);
@@ -105,7 +105,7 @@ char	*expand_middle(char *input, char *it, char *last, t_env *envmap)
 	return (expand_brace(brace));
 }
 
-char *removeChar(char *str)
+char	*removeChar(char *str)
 {
     int		i;
 	int		j;
@@ -115,9 +115,11 @@ char *removeChar(char *str)
 	len = strlen(str);
     tmp = ft_strdup(str);
 	i = 0;
-    while (i < len)
+	while (i < len)
 	{
-		if (tmp[i] == '\'' || tmp[i] == '\"')
+		while (tmp[i] == '\'')
+		 	i++;
+		if (tmp[i] == '\"')
 		{
 			j = i;
 			while (j < len)

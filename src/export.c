@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 17:00:32 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/16 10:20:39 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/16 21:11:16 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,17 @@ void	export_env(t_env **env, t_list *arg)
 	lst = (*env);
 	ft_sort_env(env);
 	if (arg->next && ft_multiple_check(arg->next->content))
-			return (ft_putendl_fd("Error: not a valid identifier", 2));
+		return (ft_putendl_fd("Error: not a valid identifier", 2));
 	if (!arg->next || ft_multiple_check(arg->next->content) == 2)
 		return (ft_print_exported(env));
 	while (arg && arg->next)
 	{
 		lst = *env;
+		arg->next->content = ft_strdup(removeChar(arg->next->content));
 		set_env_existed(env, arg, &lst);
- 		if (arg->flag == 1)
-			arg = arg->next;
 		if ((*env) == NULL)
 		{
 			value = ft_strchr(arg->next->content, '=');
-			if (value)
-				value = value + 1;
 			key = get_keys(arg->next->content, '=');
 			*env = lst;
 			ft_add_export(key, value, env);
@@ -46,20 +43,31 @@ void	export_env(t_env **env, t_list *arg)
 
 void	set_env_existed(t_env **env, t_list *arg, t_env **lst)
 {
-	char	*key;
-	char	*value;
 	t_env	*tmp;
-	char	*s;
 
 	tmp = *env;
+	if (ft_append(env, arg, lst))
+	{
+		*env = tmp;
+		ft_replace(env, arg, lst);
+	}
+	return ;
+}
+
+int	ft_append(t_env **env, t_list *arg, t_env **lst)
+{
+	char	*key;
+	char	*value;
+	char	*s;
+
 	while (*env && arg && arg->next)
 	{
 		s = ft_strchr(arg->next->content, '+');
 		key = get_keys(arg->next->content, '+');
 		if (!key || (ft_multiple_check(key) == 1 && ft_strcmp(key, "_")))
-			return (var.exit_status = 1, ft_putendl_fd("Error: export", 2));
+			return (var.exit_status = 1, ft_putendl_fd("Error: export", 2), 1);
 		if (!s)
-			break ;
+			return (1);
 		if (s[0] == '+')
 		{
 			value = s + 2;
@@ -67,15 +75,23 @@ void	set_env_existed(t_env **env, t_list *arg, t_env **lst)
 			if (*env == NULL)
 			{
 				*env = *lst;
+				value = s + 1;
 				ft_add_export(key, value, env);
-				return ;
+				return (0);
 			}
 			*env = *lst;
-			return ;
+			return (0);
 		}
-		*env =(*env)->next;
+		*env = (*env)->next;
 	}
-	*env = tmp;
+	return (0);
+}
+
+void	ft_replace(t_env **env, t_list *arg, t_env **lst)
+{
+	char	*key;
+	char	*value;
+
 	while (*env && arg && arg->next)
 	{
 		key = get_keys(arg->next->content, '=');
@@ -161,10 +177,10 @@ void	ft_add_export(char *key, char *value, t_env **env)
 {
 	t_env	*lst;
 
+	if (value)
+		value = value + 1;
 	if (ft_multiple_check(key) == 1)
 		return (var.exit_status = 1, ft_putendl_fd("Export : error", 2));
 	lst = ft_lst_new1(key, value);
-	puts(lst->value);
-	puts(lst->key);
 	ft_lstadd_back_prime(env, lst);
 }

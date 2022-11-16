@@ -49,11 +49,13 @@ int main(int argc, char const *argv[], char *envp[])
 	t_as	*syntax = NULL;
 	char	*input = NULL;
 
-	(void)argc;
 	(void)argv;
-	envmap = ft_environment(envp, envmap);
-	//signal(SIG_INT, sign_handler);
-	// rl_catch_signals = 0;
-	loop(input, chunks, syntax, envmap);
-	return 0;
+	if (argc == 1)
+	{
+		envmap = ft_environment(envp, envmap);
+		//signal(SIG_INT, sign_handler);
+		// rl_catch_signals = 0;
+		loop(input, chunks, syntax, envmap);
+		return 0;
+	}
 }

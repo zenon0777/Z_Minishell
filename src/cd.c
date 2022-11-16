@@ -6,13 +6,9 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:55:52 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/14 17:23:35 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/16 20:40:01 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
-/// SEG when we run cd test/test1 then rm -rf ../../test then cd ..
-/// => https://stackoverflow.com/questions/67251953/implement-cd-command-in-c#:~:text=%2D%20is%20a%20special%20argument%20for,directory%20in%20a%20global%20array.
 
 #include"../minishell.h"
 

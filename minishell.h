@@ -102,6 +102,8 @@ int	check_ast(t_as *ast);
 void	env_env(t_env *env);
 //execution
 void	cd_home(t_env *env);
+int		ft_append(t_env **env, t_list *arg, t_env **lst);
+void	ft_replace(t_env **env, t_list *arg, t_env **lst);
 int		check_type(char *arg);
 void	builting(t_env **env, t_list *arg);
 void	one_cmd(t_env **env, t_list *arg, char **envp, char *str);
@@ -115,7 +117,7 @@ t_env	*unset(t_env *env, t_env *tmp, t_list *arg);
 void	free_env(t_env *env);
 void	ft_free_lst(t_list **head);
 void	echo(t_list *arg);
-char	**join_echo(t_list **arg);
+char	*join_echo(t_list **arg);
 void	echo_newline(char **s);
 int		check_newline(char **str);
 void	export_env(t_env **env, t_list *arg);

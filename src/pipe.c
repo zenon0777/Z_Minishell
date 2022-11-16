@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 19:38:47 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/15 18:15:50 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/16 23:27:49 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 char	*redirection_handler(t_list **arg, t_fds *fds, char *str)
 {
-	// char	*s;
-
 	while ((*arg) && ft_strcmp((*arg)->content, "|"))
 	{
 		if (!ft_strncmp((*arg)->content, "<", 1))
@@ -59,10 +57,17 @@ void	execute_redir(t_list *arg, t_env **env, t_fds *fds, char *str)
 	char	**cmd;
 	int		tmp_in;
 	int		tmp_out;
+	int		i;
 
+	i = 0;
 	if (fds->in < 0 || fds->out < 0)
 		return (var.exit_status = 1, ft_putendl_fd("fd e5rror", 2));
 	cmd = ft_split(str, ' ');
+	while (cmd[i])
+	{
+		cmd[i] = ft_strtrim(cmd[i], "\"\'");
+		i++;
+	}
 	tmp_in = dup(0);
 	tmp_out = dup(1);
 	dup2(fds->in, STDIN_FILENO);
@@ -82,7 +87,7 @@ void	execute_redir(t_list *arg, t_env **env, t_fds *fds, char *str)
 	ft_free_2d(cmd);
 }
 
-void	execute(char **cmd, t_env **env, t_fds 	*fds)
+void	execute(char **cmd, t_env **env, t_fds *fds)
 {
 	char	**envp;
 	int		j;

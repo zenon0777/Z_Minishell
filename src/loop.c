@@ -66,7 +66,6 @@ void    loop(char *input, t_list *chunks, t_as *syntax, t_env *envmap)
         if (!quotes(input) && set_rl(input, "Quotes not paired", STDERR_FILENO, false))
             continue;
         input = expand(input, envmap, false);
-		input = removeChar(input);
         tokenizer(input, &chunks);
         syntax = ast_fill(chunks, syntax);
         if (syntax && (!check_ast(syntax) && set_rl(input, "Syntax error", STDERR_FILENO, false)))
@@ -76,8 +75,8 @@ void    loop(char *input, t_list *chunks, t_as *syntax, t_env *envmap)
             continue ;
 		}
 		// ast_print(syntax);
-		free(input);
         check_cmd(&envmap, chunks, &fd);
+		free(input);
 		if (syntax)
 			free_ast(syntax);
 		if (chunks)
