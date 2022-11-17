@@ -49,7 +49,7 @@ bool   set_rl(char *input, char *output, int fd, bool nl)
 		rl_redisplay();
 	}
 	return (true);
-} 
+}
 
 void    loop(char *input, t_list *chunks, t_as *syntax, t_env *envmap)
 {
@@ -59,8 +59,15 @@ void    loop(char *input, t_list *chunks, t_as *syntax, t_env *envmap)
     {
 		chunks = NULL;
 		syntax = NULL;
+		var.id = 0;
         input = readline("SHELL_BREAK > ");
-        if (!input && set_rl(input, "", STDERR_FILENO, false))
+		var.usr = input;
+		if (!input)
+		{
+			write(1, "exit\n", 5);
+			exit(0);
+		}
+        if (!*input && set_rl(input, "", STDERR_FILENO, false))
 			continue ;
         add_history(input);
         if (!quotes(input) && set_rl(input, "Quotes not paired", STDERR_FILENO, false))

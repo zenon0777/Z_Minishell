@@ -117,9 +117,9 @@ t_env	*unset(t_env *env, t_env *tmp, t_list *arg);
 void	free_env(t_env *env);
 void	ft_free_lst(t_list **head);
 void	echo(t_list *arg);
-char	*join_echo(t_list **arg);
+char	*join_echo(t_list *arg);
 void	echo_newline(char **s);
-int		check_newline(char **str);
+int		check_newline(char *str);
 void	export_env(t_env **env, t_list *arg);
 void	set_env_existed(t_env **env, t_list *arg, t_env **lst);
 void	cd(t_env *env, t_list *arg);
@@ -147,4 +147,5 @@ void	export_join(t_env **env, char *key, char *value);
 void	ft_sort_env(t_env **env);
 int		check_upper(char *str);
 void	ft_free_2d(char **ptr);
+void	signal_handler(int sig);
 #endif

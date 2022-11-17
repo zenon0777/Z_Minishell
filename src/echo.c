@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 17:06:02 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/16 22:57:47 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/17 22:20:16 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,82 +16,70 @@ void	echo(t_list *arg)
 {
 	char	*tmp;
 	int		i;
-	// int		k;
 
 	i = 0;
+	arg->flag = 0;
 	if (arg && (!arg->next || !ft_strcmp(arg->next->content, "\0")))
 		return (ft_putendl_fd("", 1));
-	tmp = join_echo(&arg);
-	// k = check_newline(lst->next->content);
-	i = 0;
-	// if (i > 0)
-		printf("%s\n", tmp);
-	// else (k == 0)
-	// 	echo_newline(tmp);
-}
-
-void	echo_newline(char **s)
-{
-	int		i;
-	char	*str;
-
-	i = 0;
-	str = ft_strdup("");
-	while (s[i])
+	tmp = join_echo(arg);
+	if (arg->flag == 1)
 	{
-		str = ft_strjoin(str, s[i]);
-		if (s[i + 1])
-			str = ft_strjoin(str, " ");
-		i++;
+		ft_putstr_fd(tmp, 1);
+		return ;
 	}
-	printf("%s\n", str);
-	free(str);
+	printf("%s\n", tmp);
 }
 
-char	*join_echo(t_list **arg)
+char	*join_echo(t_list *arg)
 {
 	char	*output;
+	char	*tmp;
 
 	output = ft_strdup("");
-	if (*arg)
-		(*arg) = (*arg)->next;
-	while ((*arg))
+	if (arg)
+		arg = arg->next;
+	if ((check_newline(arg->content) == 0))
 	{
-		(*arg)->content = removeChar((*arg)->content);
-		if (!ft_strcmp((*arg)->content, ">"))
+		arg->flag = 1;
+		arg = arg->next;
+	}
+	while (arg)
+	{
+		tmp = removeChar(arg->content);
+		if ((!ft_strcmp(tmp, ">")))
 		{
-			(*arg) = (*arg)->next->next;
-			if ((*arg) == NULL)
+			arg = arg->next->next;
+			if (arg == NULL)
 				break ;
 		}
-		if (!ft_strcmp((*arg)->content, "|"))
+		if (!ft_strcmp(tmp, "|"))
 			return (output);
-		output = ft_strjoin(output, (*arg)->content);
-		if ((*arg)->next)
+		output = ft_strjoin(output, tmp);
+		if (arg->next)
 			output = ft_strjoin(output, " ");
-		(*arg) = (*arg)->next;
+		arg = arg->next;
 	}
 	return (output);
 }
 
-int	check_newline(char **str)
+int	check_newline(char *str)
 {
+	char	**tmp;
 	int		i;
 	int		j;
-	int		k;
 
 	i = 0;
-	k = 0;
-	j = 1;
-	while (str[i])
+	j = 0;
+	tmp = ft_split(str, '-');
+	while (tmp[i])
 	{
-		while (str[i][0] == '-' && str[i][j] == 'n')
+		while (tmp[i][j] == 'n')
 		{
 			j++;
-			if (!str[i][j])
-				k += 1;
+			if (!tmp[i][j])
+				return (0);
 		}
 		i++;
 	}
-	return (k);
+	return (1);
 }

@@ -36,7 +36,7 @@ $(OFILES): $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c $(INC)
 $(LIBFT): force
 	        @make -C libft
 			@make bonus -C libft
-	
+
 force:
 
 clean :

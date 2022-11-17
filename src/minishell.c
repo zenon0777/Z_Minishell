@@ -1,45 +1,26 @@
 #include "../minishell.h"
 
 struct VAR	var;
-void	new_prompt(int sig)
-{
-	(void)sig;
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-}
 
-void	ctrl_c(int sig)
+void	signal_handler(int sig)
 {
-	(void)sig;
-	write(1, "\n", 1);
-}
-
-void	back_slash(int sig)
-{
-	printf("Quit\n");
-	(void)sig;
-}
-
-void sign_handler(int sig)
-{
-	if (sig == 1)
+	if (sig == 2 && var.id == 0)
 	{
-		signal(SIGINT, new_prompt);
-		signal(SIGQUIT, SIG_IGN);
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+		var.exit_status = 1;
 	}
-	if (sig == 2)
+	else if (sig == 2 && var.id == 1 && ft_strncmp(var.usr, "./minishell", 11))
+		printf("\n");
+	if (sig == 2 && var.id == 1 && !ft_strncmp(var.usr, "./minishell", 11))
+		var.exit_status = 130;
+	else if (sig == 3 && var.id == 1 && ft_strncmp(var.usr, "./minishell", 11))
 	{
-		signal(SIGINT, ctrl_c);
-		signal(SIGQUIT, back_slash);
+		var.exit_status = 131;
+		printf("Quit: 3\n");
 	}
-	// if (sig == 3)
-	// {
-	// 	printf("exit\n");
-	// 	exit(0);
-	// }
-	
 }
 
 int main(int argc, char const *argv[], char *envp[])
@@ -50,12 +31,12 @@ int main(int argc, char const *argv[], char *envp[])
 	char	*input = NULL;
 
 	(void)argv;
-	if (argc == 1)
-	{
-		envmap = ft_environment(envp, envmap);
-		//signal(SIG_INT, sign_handler);
-		// rl_catch_signals = 0;
-		loop(input, chunks, syntax, envmap);
-		return 0;
-	}
+	(void)argc;
+	var.id = 0;
+	envmap = ft_environment(envp, envmap);
+	signal(SIGINT, signal_handler);
+	signal(SIGQUIT, signal_handler);
+	rl_catch_signals = 0;
+	loop(input, chunks, syntax, envmap);
+	return 0;
 }

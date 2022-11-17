@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 19:38:47 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/17 00:35:06 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/17 23:38:18 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,8 @@ void	execute_redir(t_list *arg, t_env **env, t_fds *fds, char *str)
 	i = 0;
 	if (fds->in < 0 || fds->out < 0)
 		return (var.exit_status = 1, ft_putendl_fd("fd e5rror", 2));
+	str = removeChar(str);
 	cmd = ft_split(str, ' ');
-	while (cmd[i])
-	{
-		cmd[i] = removeChar(cmd[i]);
-		i++;
-	}
 	tmp_in = dup(0);
 	tmp_out = dup(1);
 	dup2(fds->in, STDIN_FILENO);
@@ -84,6 +80,7 @@ void	execute_redir(t_list *arg, t_env **env, t_fds *fds, char *str)
 	dup2(tmp_out, STDOUT_FILENO);
 	close(tmp_in);
 	close(tmp_out);
+	free(str);
 	ft_free_2d(cmd);
 }
 
@@ -93,7 +90,6 @@ void	execute(char **cmd, t_env **env, t_fds *fds)
 	int		j;
 
 	j = 0;
-	var.id = 1;
 	var.cpid = fork();
 	if (var.cpid < 0)
 		return (var.exit_status = 1, ft_putendl_fd("fork error", 2));
@@ -114,6 +110,17 @@ void	execute(char **cmd, t_env **env, t_fds *fds)
 		}
 		ft_free_2d(envp);
 	}
+	// signal(SIGINT, signal_handler);
+}
+
+void sig_dfl(int sig)
+{
+	(void)sig;
+	printf("\n");
+	exit(130);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 void	execute_one_cmd(char **cmd, t_env **env)
@@ -121,8 +128,8 @@ void	execute_one_cmd(char **cmd, t_env **env)
 	char	**envp;
 	int		stat;
 
-	var.id = 1;
 	stat = 0;
+	var.id = 1;
 	var.cpid = fork();
 	if (var.cpid == 0)
 	{
@@ -137,6 +144,7 @@ void	execute_one_cmd(char **cmd, t_env **env)
 		ft_free_2d(envp);
 	}
 	wait(&stat);
+	signal(SIG_INT, signal_handler);
 	var.exit_status = WEXITSTATUS(stat);
 }
 

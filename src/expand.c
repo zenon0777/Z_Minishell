@@ -45,7 +45,7 @@ void	expand_space(char *value, t_list **brace)
 		*search++ = '\0';
 		append = ft_lstnew(ft_strdup(value));
         // if (append != NULL && append->content != NULL)
-        //     exit(0); 
+        //     exit(0);
 		value = search;
 		ft_lstadd_back(brace, append);
 	}
@@ -66,17 +66,17 @@ char	*expand_brace(t_list *brace)
 	middle = NULL;
 	origin = brace;
 	ret = ft_strappend(&middle, (char *)(brace->content));
-    if (ret == false)
-        exit (0);
+    // if (ret == false)
+    //     exit (0);
 	while (brace->next != NULL)
 	{
 		brace = brace->next;
 		ret = ft_strappend(&middle, " ");
 		// if (ret == false)
-        //     exit (0); 
+        //     exit (0);
 		ret = ft_strappend(&middle, (char *)(brace->content));
 		// if (ret == false)
-        //     exit (0); 
+        //     exit (0);
 	}
 	ft_lstclear(&origin, (void *)free);
 	return (middle);
@@ -104,10 +104,9 @@ char	*expand_middle(char *input, char *it, char *last, t_env *envmap)
 	ft_free((void **)(&value));
 	return (expand_brace(brace));
 }
-
 char    quotes_type(char *arg)
 {
-    char    key;
+    char    key = '\0';
     char    *tmp;
     int        i;
 
@@ -121,6 +120,7 @@ char    quotes_type(char *arg)
                 key = 34;
             else
                 key = 39;
+            break;
         }
         i++;
     }
@@ -129,21 +129,32 @@ char    quotes_type(char *arg)
 
 char    *removeChar(char *arg)
 {
+    char    key;
+    char    *end;
     char    *first;
     char    *middle;
-    char    *fermer;
-    char    *end;
-    char    key;
+    char    *fermer = NULL;
+    char    *start;
 
-    middle = NULL;
-    end = NULL;
-    key = quotes_type(arg);
-    end = ft_strchr(ft_strchr(arg, key) + 1, key);
-    first = ft_substr(arg, 0, ft_strchr(arg, key) - arg);
-    middle = ft_substr(arg, ft_strchr(arg, key) - arg + 1, \
-            end - ft_strchr(arg, key) - 1);
-    fermer = ft_strjoin(first, middle);
-    fermer = ft_strjoin(fermer, end + 1);
+    while (1)
+    {
+        key = quotes_type(arg);
+        start = ft_strchr(arg, key);
+        end = ft_strchr(start + 1, key) + 1;
+        first = ft_substr(arg, 0, start - arg);
+        middle = ft_substr(arg, start - arg, \
+            (end - start));
+        if (!fermer)
+            fermer = ft_strjoin(first, ft_strtrim(middle, &key));
+        else
+        {
+            char *tmp = fermer;
+            fermer = ft_strjoin(tmp, ft_strjoin(first, ft_strtrim(middle, &key)));
+        }
+        if (!*(end + 1))
+            break;
+        arg = end;
+    }
     return (fermer);
 }
 
@@ -170,7 +181,7 @@ char	*expand_internal(char *input, char *it, bool d_quote, t_env *envmap)
 }
 char	*expand(char *input, t_env *envmap, bool d_quote)
 {
-	char	*iter;    
+	char	*iter;
 
 	if (input == NULL)
 		return (NULL);
