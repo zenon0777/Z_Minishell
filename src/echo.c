@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 17:06:02 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/17 22:20:16 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/17 23:52:32 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,14 @@ void	echo(t_list *arg)
 	if (arg && (!arg->next || !ft_strcmp(arg->next->content, "\0")))
 		return (ft_putendl_fd("", 1));
 	tmp = join_echo(arg);
-	if (arg->flag == 1)
+	while (arg)
 	{
-		ft_putstr_fd(tmp, 1);
-		return ;
+		if (arg->flag == 1)
+		{
+			ft_putstr_fd(tmp, 1);
+			return ;
+		}
+		arg = arg->next;
 	}
 	printf("%s\n", tmp);
 }

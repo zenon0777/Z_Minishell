@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 19:38:47 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/17 23:38:18 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/17 23:54:29 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	content_handler(t_list **arg, t_env **env, t_fds *fds)
 void	execute_redir(t_list *arg, t_env **env, t_fds *fds, char *str)
 {
 	char	**cmd;
+	char	*tmp;
 	int		tmp_in;
 	int		tmp_out;
 	int		i;
@@ -62,7 +63,7 @@ void	execute_redir(t_list *arg, t_env **env, t_fds *fds, char *str)
 	i = 0;
 	if (fds->in < 0 || fds->out < 0)
 		return (var.exit_status = 1, ft_putendl_fd("fd e5rror", 2));
-	str = removeChar(str);
+	tmp = removeChar(str);
 	cmd = ft_split(str, ' ');
 	tmp_in = dup(0);
 	tmp_out = dup(1);
@@ -80,7 +81,7 @@ void	execute_redir(t_list *arg, t_env **env, t_fds *fds, char *str)
 	dup2(tmp_out, STDOUT_FILENO);
 	close(tmp_in);
 	close(tmp_out);
-	free(str);
+	free(tmp);
 	ft_free_2d(cmd);
 }
 

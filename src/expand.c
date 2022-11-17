@@ -135,6 +135,7 @@ char    *removeChar(char *arg)
     char    *middle;
     char    *fermer = NULL;
     char    *start;
+	char	*tmp;
 
     while (1)
     {
@@ -148,13 +149,16 @@ char    *removeChar(char *arg)
             fermer = ft_strjoin(first, ft_strtrim(middle, &key));
         else
         {
-            char *tmp = fermer;
+            tmp = fermer;
             fermer = ft_strjoin(tmp, ft_strjoin(first, ft_strtrim(middle, &key)));
         }
         if (!*(end + 1))
             break;
         arg = end;
     }
+	free(tmp);
+	free(first);
+	free(middle);
     return (fermer);
 }
 
