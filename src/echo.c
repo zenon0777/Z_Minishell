@@ -6,12 +6,12 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 17:06:02 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/17 23:52:32 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/18 15:12:17 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include"../minishell.h"
+
 void	echo(t_list *arg)
 {
 	char	*tmp;
@@ -21,17 +21,19 @@ void	echo(t_list *arg)
 	arg->flag = 0;
 	if (arg && (!arg->next || !ft_strcmp(arg->next->content, "\0")))
 		return (ft_putendl_fd("", 1));
-	tmp = join_echo(arg);
+	tmp = join_echo(arg->next);
 	while (arg)
 	{
 		if (arg->flag == 1)
 		{
 			ft_putstr_fd(tmp, 1);
+			free(tmp);
 			return ;
 		}
 		arg = arg->next;
 	}
 	printf("%s\n", tmp);
+	free(tmp);
 }
 
 char	*join_echo(t_list *arg)
@@ -40,8 +42,6 @@ char	*join_echo(t_list *arg)
 	char	*tmp;
 
 	output = ft_strdup("");
-	if (arg)
-		arg = arg->next;
 	if ((check_newline(arg->content) == 0))
 	{
 		arg->flag = 1;
@@ -54,15 +54,24 @@ char	*join_echo(t_list *arg)
 		{
 			arg = arg->next->next;
 			if (arg == NULL)
+			{
+				free(tmp);
 				break ;
+			}
+			else
+				tmp = removeChar(arg->content);
 		}
 		if (!ft_strcmp(tmp, "|"))
+		{
+			free(tmp);
 			return (output);
+		}
 		output = ft_strjoin(output, tmp);
 		if (arg->next)
 			output = ft_strjoin(output, " ");
 		arg = arg->next;
 	}
+	free(tmp);
 	return (output);
 }
 
@@ -85,5 +94,6 @@ int	check_newline(char *str)
 		}
 		i++;
 	}
+	ft_free_2d(tmp);
 	return (1);
 }

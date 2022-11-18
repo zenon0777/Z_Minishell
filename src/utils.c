@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 14:30:18 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/14 17:51:24 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/18 15:25:56 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,16 @@ void	ft_listadd_back_prime(t_env **lst, t_env *node)
 			head = head->next;
 		head->next = node;
 	}
+}
+
+void	free_ast(t_as *ast)
+{
+	t_as	*tree;
+
+	tree = ast;
+	if (tree->right)
+		free_ast(tree->right);
+	if (tree->left)
+		free_ast(tree->left);
+	free(ast);
 }

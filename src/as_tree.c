@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   as_tree.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/18 14:42:39 by adaifi            #+#    #+#             */
+/*   Updated: 2022/11/18 14:45:04 by adaifi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 int	check_ast(t_as *ast)
@@ -10,7 +22,7 @@ int	check_ast(t_as *ast)
 		if ((ast->left == NULL || ast->right == NULL))
 			return (0);
 		if (ast->right->type == PIPE && pre->right == NULL)
-			return 0;
+			return (0);
 	}
 	if (ast->type == RD)
 	{
@@ -19,20 +31,8 @@ int	check_ast(t_as *ast)
 	}
 	if (ast->left != NULL && ast->right != NULL)
 		if (!check_ast(ast->left) || !check_ast(ast->right))
-			return 0;
+			return (0);
 	return (1);
-}
-
-void	free_ast(t_as *ast)
-{
-	t_as	*tree;
-
-	tree = ast;
-	if (tree->right)
-		free_ast(tree->right);
-	if (tree->left)
-		free_ast(tree->left);
-	free(ast);
 }
 
 t_as	*d_add_redir_pipe(t_as *ast, t_as *node)

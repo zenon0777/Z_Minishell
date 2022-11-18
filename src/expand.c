@@ -156,9 +156,9 @@ char    *removeChar(char *arg)
             break;
         arg = end;
     }
-	free(tmp);
 	free(first);
 	free(middle);
+	// free(tmp);
     return (fermer);
 }
 

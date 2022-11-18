@@ -124,7 +124,8 @@ void	export_env(t_env **env, t_list *arg);
 void	set_env_existed(t_env **env, t_list *arg, t_env **lst);
 void	cd(t_env *env, t_list *arg);
 t_env	*ft_lst_new1(char *key, char *value);
-// t_list	*ft_lst_new_prime(char *str);
+void	ft_add_newpwd(t_env *env, t_env *node, char *home);
+void	d_exit(t_list *arg);
 void	ft_lstadd_back_prime(t_env **lst, t_env *node);
 char	*get_keys(char *str, int c);
 void	env_env(t_env *env);
@@ -148,4 +149,5 @@ void	ft_sort_env(t_env **env);
 int		check_upper(char *str);
 void	ft_free_2d(char **ptr);
 void	signal_handler(int sig);
+void	wait_stat(t_fds *fds, int i);
 #endif
