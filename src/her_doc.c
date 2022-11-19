@@ -6,13 +6,13 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/13 17:42:09 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/17 23:39:17 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/18 15:33:41 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../minishell.h"
 
-void sig_herdoc(int sig)
+void	sig_herdoc(int sig)
 {
 	(void)sig;
 	printf("\n");
@@ -25,8 +25,8 @@ void sig_herdoc(int sig)
 int	her_doc(t_list *arg)
 {
 	char	*s;
-	int	file;
-	int	tmp;
+	int		file;
+	int		tmp;
 
 	signal(SIGINT, SIG_IGN);
 	file = open("/tmp/tmpfile", O_WRONLY | O_CREAT | O_TRUNC, 00777);

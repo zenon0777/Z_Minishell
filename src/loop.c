@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   loop.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/18 15:33:53 by adaifi            #+#    #+#             */
+/*   Updated: 2022/11/19 02:12:02 by adaifi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 void	ast_print(t_as *ast)
@@ -32,61 +44,64 @@ int	quotes(char *cmd)
 	return (1);
 }
 
-bool   set_rl(char *input, char *output, int fd, bool nl)
+bool	set_rl(char *input, char *output, int fd)
 {
-    if (input != NULL)
+	if (input != NULL)
 	{
 		ft_putstr_fd(input, fd);
 		ft_putstr_fd(": ", fd);
 	}
-	if (output != NULL)
-		ft_putstr_fd(output, fd);
-	ft_putendl_fd("", fd);
-	if (nl)
+	if (input != NULL && output)
 	{
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		ft_putstr_fd(output, fd);
+		ft_putstr_fd("\n", 0);
 	}
 	return (true);
 }
 
-void    loop(char *input, t_list *chunks, t_as *syntax, t_env *envmap)
+void	loop(char *input, t_list *chunks, t_as *syntax, t_env *envmap)
 {
 	t_fds	fd;
 
 	while (1)
-    {
+	{
 		chunks = NULL;
 		syntax = NULL;
 		var.id = 0;
-        input = readline("SHELL_BREAK > ");
-		var.usr = input;
+		input = readline("SHELL_BREAK > ");
+		var.usr = ft_strtrim(input, "\t ");
 		if (!input)
 		{
+			free(input);
+			free(var.usr);
 			write(1, "exit\n", 5);
 			exit(0);
 		}
-        if (!*input && set_rl(input, "", STDERR_FILENO, false))
+		if (!*input && set_rl(NULL, "", 2))
+		{
+			free(input);
+			free(var.usr);
 			continue ;
-        add_history(input);
-        if (!quotes(input) && set_rl(input, "Quotes not paired", STDERR_FILENO, false))
-            continue;
-        input = expand(input, envmap, false);
-        tokenizer(input, &chunks);
-        syntax = ast_fill(chunks, syntax);
-        if (syntax && (!check_ast(syntax) && set_rl(input, "Syntax error", STDERR_FILENO, false)))
+		}
+		add_history(input);
+		if (!quotes(input) && set_rl(input, "Quotes error", 2))
+			continue ;
+		input = expand(input, envmap, false);
+		tokenizer(input, &chunks);
+		syntax = ast_fill(chunks, syntax);
+		// ast_print(syntax);
+		if ((!check_ast(syntax) && set_rl(input, "Syntax error", 2)))
 		{
 			free_ast(syntax);
 			ft_lstclear(&chunks, (void *)free);
-            continue ;
+			continue ;
 		}
-		// ast_print(syntax);
-        check_cmd(&envmap, chunks, &fd);
+		check_cmd(&envmap, chunks, &fd);
 		free(input);
+		free(var.usr);
 		if (syntax)
 			free_ast(syntax);
 		if (chunks)
-			ft_lstclear(&chunks, (void *)free);
+			ft_lstclear(&chunks, free);
 	}
 }

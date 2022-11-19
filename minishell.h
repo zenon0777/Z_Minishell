@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/18 15:55:57 by adaifi            #+#    #+#             */
+/*   Updated: 2022/11/19 02:07:40 by adaifi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
 
 # include <sys/types.h>
 # include <signal.h>
@@ -22,7 +34,7 @@
 # define CMD 2
 # define RD 1
 
-extern struct VAR
+struct s_VAR
 {
 	int		id;
 	pid_t	cpid;
@@ -31,8 +43,6 @@ extern struct VAR
 	int		i;
 } var;
 
-extern struct VAR var;
-
 typedef struct fds
 {
 	int		in;
@@ -40,7 +50,6 @@ typedef struct fds
 	int		*fd;
 	int		flag;
 }	t_fds;
-
 
 typedef struct s_env{
 	char			*key;
@@ -52,18 +61,14 @@ typedef struct s_env{
 
 typedef struct s_as
 {
-   char         *cmd;
-   int		    type;
-   struct s_as  *left;
-   struct s_as  *right;
-}   t_as;
+	char			*cmd;
+	int				type;
+	struct s_as		*left;
+	struct s_as		*right;
+}	t_as;
 
 void	ft_free(void **ptr);
 bool	ft_isspace(int c);
-// t_list	*ft_listnew(void *content);
-// t_list	*ft_listlast(t_list *lst);
-// void	ft_listdelone(t_list *lst, void (*del)(void*));
-// void	ft_listclear(t_list **lst, void (*del)(void *));
 size_t	ft_strlen(char const *str);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strdup(const char *s1);
@@ -79,26 +84,20 @@ char	*expand_brace(t_list *brace);
 char	*expand_middle(char *input, char *it, char *last, t_env *envmap);
 char	*expand_internal(char *input, char *it, bool d_quote, t_env *envmap);
 char	*expand(char *input, t_env *envmap, bool d_quote);
-char	*tokenize_internal(char *input, char *begin, char *end, t_list **chunks);
+char	*tokenize_inter(char *input, char *begin, char *end, t_list **chunks);
 void	tokenizer(char *input, t_list **chunks);
-// void	ft_listadd_back(t_list **lst, t_list *new);
-// t_env	*envirement(char *envp[]);
-// t_env	*ft_listnew_edit(void *content, void *key);
-// void	ft_putstr_fd(char *s, int fd);
-// void	ft_putendl_fd(char *s, int fd);
-// void	ft_putchar(char c, int fd);
-void    loop(char *input, t_list *chunks, t_as *syntax, t_env *envmap);
+void	loop(char *input, t_list *chunks, t_as *syntax, t_env *envmap);
 void	ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env	*ft_lstnew_env(char *name, char *value);
 char	*removeChar(char *str);
 void	ft_while_env(t_env **env, char **envp, t_env **node, int *i);
 t_env	*ft_environment(char **envp, t_env *env);
-bool	set_rl(char *input, char *output, int fd, bool nl);
+bool	set_rl(char *input, char *output, int fd);
 t_as	*ast_fill(t_list *lst, t_as *syntax);
 t_as	*d_add_node(t_as *ast, t_as *node);
 t_as	*d_new_node(char *str);
 void	free_ast(t_as *ast);
-int	check_ast(t_as *ast);
+int		check_ast(t_as *ast);
 void	env_env(t_env *env);
 //execution
 void	cd_home(t_env *env);
@@ -137,7 +136,7 @@ void	execute_redir(t_list *arg, t_env **env, t_fds *fds, char *str);
 char	*redirection_handler(t_list **arg, t_fds *fds, char *str);
 void	input(t_list **arg, t_fds *fds);
 void	output(t_list **arg, t_fds *fds);
-void	execute(char **cmd, t_env **env, t_fds 	*fds);
+void	execute(char **cmd, t_env **env, t_fds *fds);
 int		her_doc(t_list *arg);
 char	*get_next_line(int fd);
 void	update_pwd(t_env **lst, char *home);

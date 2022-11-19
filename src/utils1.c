@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 21:17:24 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/18 15:24:37 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/18 16:41:23 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void	wait_stat(t_fds *fds, int i)
 	j = 0;
 	while (j <= i)
 	{
-		wait(NULL);
+		wait(&stat);
 		j++;
 	}
 	var.exit_status = WEXITSTATUS(stat);

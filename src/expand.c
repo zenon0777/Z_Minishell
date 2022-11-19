@@ -22,7 +22,10 @@ char	*getvalue(char *key, t_env *envmap)
 char	*expand_last(char *it)
 {
 	if (*it && ft_strchr("$?", *it))
+	{
+		if (ft_strchr("$?", *it))
 		++it;
+	}
 	else
 		while (*it && ft_isalnum(*it))
 			++it;
@@ -91,6 +94,8 @@ char	*expand_middle(char *input, char *it, char *last, t_env *envmap)
 	if (last - it == 1)
 		return (ft_strdup("$"));
 	key = ft_substr(input, it - input + 1, last - it - 1);
+	if (!ft_strcmp(key, "?"))
+		return (ft_strdup(ft_itoa(var.exit_status)));
 	value = getvalue(key, envmap);
 	if (value == NULL)
 		value = "";
@@ -130,35 +135,37 @@ char    quotes_type(char *arg)
 char    *removeChar(char *arg)
 {
     char    key;
-    char    *end;
-    char    *first;
-    char    *middle;
+    char    **table;
     char    *fermer = NULL;
-    char    *start;
-	char	*tmp;
+    char    *tmp0;
+   
 
+    tmp0 = NULL;
+    table = (char **)malloc(sizeof(char *) * 6);
+    if (!table)
+        return (NULL);
     while (1)
     {
         key = quotes_type(arg);
-        start = ft_strchr(arg, key);
-        end = ft_strchr(start + 1, key) + 1;
-        first = ft_substr(arg, 0, start - arg);
-        middle = ft_substr(arg, start - arg, \
-            (end - start));
+        table[1] = ft_strchr(arg, key);
+        table[2] = ft_strchr(table[1] + 1, key) + 1;
+        tmp0 = ft_substr(arg, 0, table[1] - arg);
+        table[3] = ft_substr(arg, (table[1] - arg), (table[2] - table[1]));
+        table[4] = ft_strtrim(table[3], &key);
+        table[5] = ft_strjoin(tmp0, table[4]);
+		free(tmp0);
         if (!fermer)
-            fermer = ft_strjoin(first, ft_strtrim(middle, &key));
+            fermer = ft_strdup(table[5]);
         else
-        {
-            tmp = fermer;
-            fermer = ft_strjoin(tmp, ft_strjoin(first, ft_strtrim(middle, &key)));
-        }
-        if (!*(end + 1))
+            fermer = ft_strjoin_custom(fermer, table[5]);
+        arg = table[2];
+        free(table[3]);
+        free(table[5]);
+        free(table[4]);
+        if (!*(table[2] + 1))
             break;
-        arg = end;
     }
-	free(first);
-	free(middle);
-	// free(tmp);
+    free(table);
     return (fermer);
 }
 
@@ -178,6 +185,7 @@ char	*expand_internal(char *input, char *it, bool d_quote, t_env *envmap)
 	latter = expand(last,envmap ,d_quote);
 	ft_free((void **)(&middle));
 	ft_free((void **)(&first));
+	free(input);
 	input = ft_strjoin(former, latter);
 	ft_free((void **)(&latter));
 	ft_free((void **)(&former));

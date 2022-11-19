@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/25 14:30:18 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/18 15:25:56 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/18 16:01:43 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,4 +52,27 @@ void	free_ast(t_as *ast)
 	if (tree->left)
 		free_ast(tree->left);
 	free(ast);
+}
+
+void	ft_free_lst(t_list **head)
+{
+	t_list		*tmp;
+
+	while ((*head))
+	{
+		free((*head)->content);
+		tmp = (*head)->next;
+		free((*head));
+		(*head) = tmp;
+	}
+}
+
+void	ft_free_2d(char **ptr)
+{
+	int	i;
+
+	i = 0;
+	while (ptr[i])
+		free(ptr[i++]);
+	free(ptr);
 }

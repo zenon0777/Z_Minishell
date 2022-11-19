@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 17:06:02 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/18 15:12:17 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/19 01:41:07 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,12 @@ char	*join_echo(t_list *arg)
 	while (arg)
 	{
 		tmp = removeChar(arg->content);
-		if ((!ft_strcmp(tmp, ">")))
+		if ((!ft_strcmp(tmp, ">")) || (!ft_strcmp(tmp, ">>")))
 		{
 			arg = arg->next->next;
+			free(tmp);
 			if (arg == NULL)
-			{
-				free(tmp);
 				break ;
-			}
 			else
 				tmp = removeChar(arg->content);
 		}
@@ -66,12 +64,12 @@ char	*join_echo(t_list *arg)
 			free(tmp);
 			return (output);
 		}
-		output = ft_strjoin(output, tmp);
+		output = ft_strjoin_custom(output, tmp);
+		free(tmp);
 		if (arg->next)
-			output = ft_strjoin(output, " ");
+			output = ft_strjoin_custom(output, " ");
 		arg = arg->next;
 	}
-	free(tmp);
 	return (output);
 }
 
@@ -90,7 +88,10 @@ int	check_newline(char *str)
 		{
 			j++;
 			if (!tmp[i][j])
+			{
+				ft_free_2d(tmp);
 				return (0);
+			}
 		}
 		i++;
 	}

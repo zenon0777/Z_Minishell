@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 15:23:53 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/18 15:26:05 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/19 01:18:14 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	export_join(t_env **env, char *key, char *value)
 	{
 		if (!ft_strcmp(key, (*env)->key))
 		{
-			(*env)->value = ft_strjoin((*env)->value, value);
+			(*env)->value = ft_strjoin_custom((*env)->value, value);
 			break ;
 		}
 		*env = (*env)->next;

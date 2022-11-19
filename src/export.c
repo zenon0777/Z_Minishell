@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 17:00:32 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/18 15:15:22 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/19 01:19:09 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	export_env(t_env **env, t_list *arg)
 	t_env	*lst;
 	char	*value;
 	char	*key;
+	char	*tmp;
 
 	lst = (*env);
 	ft_sort_env(env);
@@ -27,7 +28,9 @@ void	export_env(t_env **env, t_list *arg)
 	while (arg && arg->next)
 	{
 		lst = *env;
-		arg->next->content = ft_strdup(removeChar(arg->next->content));
+		tmp = arg->next->content;
+		arg->next->content = removeChar(tmp);
+		free(tmp);
 		set_env_existed(env, arg, &lst);
 		if ((*env) == NULL)
 		{
@@ -35,6 +38,7 @@ void	export_env(t_env **env, t_list *arg)
 			key = get_keys(arg->next->content, '=');
 			*env = lst;
 			ft_add_export(key, value, env);
+			free(key);
 		}
 		arg = arg->next;
 	}
@@ -65,9 +69,12 @@ int	ft_append(t_env **env, t_list *arg, t_env **lst)
 		s = ft_strchr(arg->next->content, '+');
 		key = get_keys(arg->next->content, '+');
 		if (!key || (ft_multiple_check(key) == 1 && ft_strcmp(key, "_")))
-			return (var.exit_status = 1, ft_putendl_fd("Error: export", 2), 1);
+			return (var.exit_status = 1, free(key), ft_putendl_fd("Error: export", 2), 1);
 		if (!s)
+		{
+			free(key);
 			return (1);
+		}
 		if (s[0] == '+')
 		{
 			value = s + 2;
@@ -77,11 +84,14 @@ int	ft_append(t_env **env, t_list *arg, t_env **lst)
 				*env = *lst;
 				value = s + 1;
 				ft_add_export(key, value, env);
+				free(key);
 				return (0);
 			}
+			free(key);
 			*env = *lst;
 			return (0);
 		}
+		free(key);
 		*env = (*env)->next;
 	}
 	return (0);
@@ -100,10 +110,13 @@ void	ft_replace(t_env **env, t_list *arg, t_env **lst)
 			value = value + 1;
 		if (!ft_strcmp(key, (*env)->key) && value)
 		{
+			free((*env)->value);
 			(*env)->value = ft_strdup(value);
 			*env = *lst;
+			free(key);
 			return ;
 		}
+		free(key);
 		*env = (*env)->next;
 	}
 }

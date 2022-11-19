@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/06 12:54:37 by med-doba          #+#    #+#             */
-/*   Updated: 2022/11/16 21:24:31 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/18 17:21:23 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ t_env	*ft_lstnew_env(char *name, char *value)
 	node->key = ft_strdup(name);
 	if (value)
 		node->value = ft_strdup(value);
+	else if (!value)
+		node->value = ft_strdup("");
 	node->next = NULL;
 	return (node);
 }
