@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 17:01:26 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/19 01:52:25 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/20 21:04:51 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	unset_env(t_env **env, t_list *arg)
 
 	tmp = NULL;
 	str = NULL;
+	if (ft_strcmp(arg->content, "unset"))
+		arg = arg->next->next;
 	while (arg && env)
 	{
 		str = arg->content;
@@ -61,7 +63,6 @@ void	free_env(t_env *env)
 	t_env	*env_back;
 
 	while (env)
-	
 	{
 		env_back = env;
 		free(env->key);

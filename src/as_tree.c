@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 14:42:39 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/18 14:45:04 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/20 12:41:52 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,17 @@
 
 int	check_ast(t_as *ast)
 {
-	t_as	*pre;
-
-	pre = ast->right;
-	if (ast->type == PIPE)
+	if (ast == NULL)
+		return (1);
+	if (ast->type == PIPE || ast->type == RD)
 	{
-		if ((ast->left == NULL || ast->right == NULL))
-			return (0);
-		if (ast->right->type == PIPE && pre->right == NULL)
+		if (ast->left == NULL)
 			return (0);
 	}
-	if (ast->type == RD)
-	{
-		if (ast->left == NULL || (pre && pre->type == RD))
-			return (0);
-	}
-	if (ast->left != NULL && ast->right != NULL)
-		if (!check_ast(ast->left) || !check_ast(ast->right))
-			return (0);
+	if (!check_ast(ast->left))
+		return (0);
+	if (!check_ast(ast->right))
+		return (0);
 	return (1);
 }
 
@@ -39,7 +32,7 @@ t_as	*d_add_redir_pipe(t_as *ast, t_as *node)
 {
 	if (ast->type == RD)
 	{
-		if (ast->right != NULL)
+		if (ast->left == NULL)
 			ast->left = d_add_node(ast->left, node);
 		else
 			ast->right = d_add_node(ast->right, node);
@@ -88,10 +81,10 @@ t_as	*d_new_node(char *str)
 	ast = (t_as *)malloc(sizeof(t_as));
 	if (ast == NULL)
 		return (NULL);
-	if (!ft_strncmp(str, ">", 2) || !ft_strncmp(str, ">>", 3)
-		|| !ft_strncmp(str, "<", 2) || !ft_strncmp(str, "<<", 3))
+	if (!ft_strcmp(str, ">") || !ft_strcmp(str, ">>")
+		|| !ft_strcmp(str, "<") || !ft_strcmp(str, "<<"))
 		ast->type = RD;
-	else if (!ft_strncmp(str, "|", 2))
+	else if (!ft_strcmp(str, "|"))
 			ast->type = PIPE;
 	else
 		ast->type = CMD;

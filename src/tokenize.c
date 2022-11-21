@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 15:51:59 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/19 01:02:55 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/21 00:40:54 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 char	*tokenize_inter(char *input, char *begin, char *end, t_list **chunks)
 {
-	char	*token = NULL;
+	char	*token;
 	t_list	*temp;
 
+	token = NULL;
 	if (token)
 		free(token);
 	token = ft_substr(input, begin - input, end - begin + 1);
@@ -33,7 +34,7 @@ void	tokenizer(char *input, t_list **chunks)
 	begin = input;
 	while (*begin)
 	{
-		while (*begin == ' ')
+		while (*begin == ' ' || *begin == '\t')
 			++begin;
 		end = begin;
 		while (*end && !ft_strchr(" ><|", *begin))

@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 15:40:34 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/18 23:50:19 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/20 20:19:55 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,6 @@ void	signal_handler(int sig)
 	}
 }
 
-// void	f()
-// {
-// 	system("leaks minishell");
-// }
-
 int	main(int argc, char const *argv[], char *envp[])
 {
 	t_env	*envmap;
@@ -51,7 +46,6 @@ int	main(int argc, char const *argv[], char *envp[])
 	input = NULL;
 	(void)argv;
 	(void)argc;
-	// atexit(f);
 	var.id = 0;
 	envmap = ft_environment(envp, envmap);
 	signal(SIGINT, signal_handler);

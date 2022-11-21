@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/09 14:32:48 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/18 14:39:45 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/20 20:50:48 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,21 +33,28 @@ int	check_type(char *arg)
 	return (0);
 }
 
-void	builting(t_env **env, t_list *arg)
+void	builting(t_env **env, t_list *arg, char *str)
 {
-	if (!ft_strcmp(arg->content, "pwd") || !ft_strcmp(arg->content, "PWD"))
+	if (!ft_strcmp(str, "pwd")
+		|| !ft_strcmp(str, "PWD"))
 		pwd_env();
-	else if (!ft_strcmp(arg->content, "cd") || !ft_strcmp(arg->content, "CD"))
+	else if (!ft_strcmp(str, "cd")
+		|| !ft_strcmp(str, "CD"))
 		cd(*env, arg);
-	else if (!ft_strcmp(arg->content, "unset") || !ft_strcmp(arg->content, "UNSET"))
+	else if (!ft_strcmp(str, "unset")
+		|| !ft_strcmp(str, "UNSET"))
 		unset_env(env, arg);
-	else if (!ft_strcmp(arg->content, "echo") || !ft_strcmp(arg->content, "ECHO"))
+	else if (!ft_strcmp(str, "echo")
+		|| !ft_strcmp(str, "ECHO"))
 		echo(arg);
-	else if (!ft_strcmp(arg->content, "export") || !ft_strcmp(arg->content, "EXPORT"))
+	else if (!ft_strcmp(str, "export")
+		|| !ft_strcmp(str, "EXPORT"))
 		export_env(env, arg);
-	else if (!ft_strcmp(arg->content, "env") || !ft_strcmp(arg->content, "ENV"))
+	else if (!ft_strcmp(str, "env")
+		|| !ft_strcmp(str, "ENV"))
 		env_env(*env);
-	else if (!ft_strcmp(arg->content, "exit") || !ft_strcmp(arg->content, "EXIT"))
+	else if (!ft_strcmp(str, "exit")
+		|| !ft_strcmp(str, "EXIT"))
 		d_exit(arg);
 }
 

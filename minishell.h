@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 15:55:57 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/19 02:07:40 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/21 01:54:08 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	tokenizer(char *input, t_list **chunks);
 void	loop(char *input, t_list *chunks, t_as *syntax, t_env *envmap);
 void	ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env	*ft_lstnew_env(char *name, char *value);
-char	*removeChar(char *str);
+char	*removechar(char *str);
 void	ft_while_env(t_env **env, char **envp, t_env **node, int *i);
 t_env	*ft_environment(char **envp, t_env *env);
 bool	set_rl(char *input, char *output, int fd);
@@ -102,9 +102,9 @@ void	env_env(t_env *env);
 //execution
 void	cd_home(t_env *env);
 int		ft_append(t_env **env, t_list *arg, t_env **lst);
-void	ft_replace(t_env **env, t_list *arg, t_env **lst);
+int		ft_replace(t_env **env, t_list *arg, t_env **lst);
 int		check_type(char *arg);
-void	builting(t_env **env, t_list *arg);
+void	builting(t_env **env, t_list *arg, char *str);
 void	one_cmd(t_env **env, t_list *arg, char **envp, char *str);
 void	execute_one_cmd(char **cmd, t_env **env);
 void	check_cmd(t_env **env, t_list *arg, t_fds *fd);
@@ -120,7 +120,7 @@ char	*join_echo(t_list *arg);
 void	echo_newline(char **s);
 int		check_newline(char *str);
 void	export_env(t_env **env, t_list *arg);
-void	set_env_existed(t_env **env, t_list *arg, t_env **lst);
+int		set_env_existed(t_env **env, t_list *arg, t_env **lst);
 void	cd(t_env *env, t_list *arg);
 t_env	*ft_lst_new1(char *key, char *value);
 void	ft_add_newpwd(t_env *env, t_env *node, char *home);
@@ -142,8 +142,8 @@ char	*get_next_line(int fd);
 void	update_pwd(t_env **lst, char *home);
 int		ft_multiple_check(char *arg);
 void	ft_print_exported(t_env **env);
-void	ft_add_export(char *key, char *value, t_env **env);
-void	export_join(t_env **env, char *key, char *value);
+void	ft_add_export(char *str, t_env **env);
+void	export_join(t_env **env, t_list *arg, char *key, char *value);
 void	ft_sort_env(t_env **env);
 int		check_upper(char *str);
 void	ft_free_2d(char **ptr);

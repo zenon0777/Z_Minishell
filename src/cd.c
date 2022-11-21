@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 16:55:52 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/18 14:42:22 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/20 21:01:40 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	cd(t_env *env, t_list *arg)
 	getcwd(oldpwd, 1024);
 	if (!arg->next || ft_multiple_check(arg->next->content) == 2)
 		cd_home(env);
+	if (ft_strcmp(arg->content, "cd") && arg->next->next)
+		arg = arg->next->next;
 	while (arg->next)
 	{
 		if (ft_multiple_check(arg->next->content) == 2)

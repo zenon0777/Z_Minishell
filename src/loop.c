@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 15:33:53 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/19 02:12:02 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/21 00:45:04 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,18 @@ void	loop(char *input, t_list *chunks, t_as *syntax, t_env *envmap)
 		}
 		add_history(input);
 		if (!quotes(input) && set_rl(input, "Quotes error", 2))
+		{
+			free(input);
+			free(var.usr);
 			continue ;
+		}
 		input = expand(input, envmap, false);
 		tokenizer(input, &chunks);
 		syntax = ast_fill(chunks, syntax);
-		// ast_print(syntax);
 		if ((!check_ast(syntax) && set_rl(input, "Syntax error", 2)))
 		{
+			free(input);
+			free(var.usr);
 			free_ast(syntax);
 			ft_lstclear(&chunks, (void *)free);
 			continue ;

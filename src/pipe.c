@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/10 19:38:47 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/19 02:52:06 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/21 01:40:33 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,6 @@ void	content_handler(t_list **arg, t_env **env, t_fds *fds)
 	tmp_in = dup(0);
 	tmp_out = dup(1);
 	str = redirection_handler(arg, fds, str);
-	if (*str == '\0')
-		return (printf("command not found\n"), var.exit_status = 127, free(str));
 	dup2(tmp_in, STDIN_FILENO);
 	dup2(tmp_out, STDOUT_FILENO);
 	close(tmp_in);
@@ -61,7 +59,7 @@ void	execute_redir(t_list *arg, t_env **env, t_fds *fds, char *str)
 	int		tmp_in;
 	int		tmp_out;
 
-	tmp = removeChar(str);
+	tmp = removechar(str);
 	cmd = ft_split(tmp, ' ');
 	tmp_in = dup(0);
 	tmp_out = dup(1);
@@ -70,7 +68,7 @@ void	execute_redir(t_list *arg, t_env **env, t_fds *fds, char *str)
 	close(fds->in);
 	close(fds->out);
 	if (check_type(cmd[0]))
-		builting(env, arg);
+		builting(env, arg, cmd[0]);
 	else if (var.i == 0)
 		execute_one_cmd(cmd, env);
 	else
@@ -87,21 +85,18 @@ void	execute(char **cmd, t_env **env, t_fds *fds)
 	char	**envp;
 	int		j;
 
-	j = 0;
+	j = -1;
 	var.id = 1;
 	var.cpid = fork();
 	if (var.cpid < 0)
 		return (var.exit_status = 1, ft_putendl_fd("fork error", 2));
 	if (var.cpid == 0)
 	{
-		while (j <= var.i)
-		{
+		while (++j <= var.i)
 			close(fds->fd[j]);
-			j++;
-		}
 		envp = env_str(*env);
 		if (execve(get_path(cmd[0], env), cmd, envp) == -1
-			|| check_upper(cmd[0]) || !get_path(cmd[0], env))
+			|| check_upper(cmd[0]) || !get_path(cmd[0], env) || envp == NULL)
 		{
 			ft_free_2d(envp);
 			ft_free_2d(cmd);

@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/23 21:17:24 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/18 16:41:23 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/21 00:33:33 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,21 +74,17 @@ void	pipe_handler(t_fds *fds, t_list *arg, t_env *env, int i)
 	j = -1;
 	while (arg && ++j < i)
 	{
+		fds->in = dup(0);
+		fds->out = dup(1);
 		if (j == 0)
-		{
-			fds->in = dup(0);
 			fds->out = dup(fds->fd[(j * 2) + 1]);
-		}
 		else if (j < i && j != i - 1)
 		{
 			fds->out = dup(fds->fd[(j * 2) + 1]);
 			fds->in = dup(fds->fd[(j - 1) * 2]);
 		}
 		else if (j == i - 1)
-		{
 			fds->in = dup(fds->fd[(j - 1) * 2]);
-			fds->out = dup(1);
-		}
 		content_handler(&arg, &env, fds);
 		if (arg && arg->next != NULL)
 			arg = arg->next;

@@ -6,7 +6,7 @@
 /*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/03 17:06:02 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/19 01:41:07 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/21 01:33:36 by adaifi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,30 @@
 void	echo(t_list *arg)
 {
 	char	*tmp;
+	t_list	*tmp1;
 	int		i;
 
 	i = 0;
 	arg->flag = 0;
+	tmp1 = arg;
 	if (arg && (!arg->next || !ft_strcmp(arg->next->content, "\0")))
-		return (ft_putendl_fd("", 1));
-	tmp = join_echo(arg->next);
-	while (arg)
+		return (printf("\n"), (void)arg);
+	if (ft_strcmp(arg->content, "echo"))
+		arg = arg->next->next;
+	arg = arg->next;
+	if ((check_newline(arg->content) == 0))
 	{
-		if (arg->flag == 1)
-		{
-			ft_putstr_fd(tmp, 1);
-			free(tmp);
-			return ;
-		}
+		arg->flag = 1;
 		arg = arg->next;
 	}
-	printf("%s\n", tmp);
-	free(tmp);
+	tmp = join_echo(arg);
+	while (tmp1)
+	{
+		if (tmp1->flag == 1)
+			return (printf("%s", tmp), free(tmp));
+		tmp1 = tmp1->next;
+	}
+	return (printf("%s\n", tmp), free(tmp));
 }
 
 char	*join_echo(t_list *arg)
@@ -42,14 +47,9 @@ char	*join_echo(t_list *arg)
 	char	*tmp;
 
 	output = ft_strdup("");
-	if ((check_newline(arg->content) == 0))
-	{
-		arg->flag = 1;
-		arg = arg->next;
-	}
 	while (arg)
 	{
-		tmp = removeChar(arg->content);
+		tmp = removechar(arg->content);
 		if ((!ft_strcmp(tmp, ">")) || (!ft_strcmp(tmp, ">>")))
 		{
 			arg = arg->next->next;
@@ -57,13 +57,10 @@ char	*join_echo(t_list *arg)
 			if (arg == NULL)
 				break ;
 			else
-				tmp = removeChar(arg->content);
+				tmp = removechar(arg->content);
 		}
 		if (!ft_strcmp(tmp, "|"))
-		{
-			free(tmp);
-			return (output);
-		}
+			return (free(tmp), output);
 		output = ft_strjoin_custom(output, tmp);
 		free(tmp);
 		if (arg->next)
