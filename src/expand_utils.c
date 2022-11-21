@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: adaifi <adaifi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yimzaoua <yimzaoua@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/20 18:56:31 by adaifi            #+#    #+#             */
-/*   Updated: 2022/11/21 01:33:04 by adaifi           ###   ########.fr       */
+/*   Updated: 2022/11/21 13:30:24 by yimzaoua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,46 @@ char	*quotes_type(char *arg)
 	return (ft_strdup(""));
 }
 
+char	*setup_table(char **table, char *arg, char **key)
+{
+	char	*tmp0;
+	char	*fermer;
+
+	*key = quotes_type(arg);
+	fermer = NULL;
+	if (arg)
+		table[1] = ft_strchr(arg, *(*key));
+	if (table[1][0] == '\0')
+	{
+		if (fermer == NULL)
+			return (free(*key), free(table), ft_strdup(arg));
+		return (free(*key), free(table), ft_strjoin_custom(fermer, arg));
+	}
+	table[2] = ft_strchr(table[1] + 1, *(*key)) + 1;
+	tmp0 = ft_substr(arg, 0, table[1] - arg);
+	table[3] = ft_substr(arg, (table[1] - arg), (table[2] - table[1]));
+	table[4] = ft_strtrim(table[3], *key);
+	table[5] = ft_strjoin_custom(tmp0, table[4]);
+	if (!fermer)
+		fermer = ft_strdup(table[5]);
+	else
+		fermer = ft_strjoin_custom(fermer, table[5]);
+	free(*key);
+	return (fermer);
+}
+
+void	setup_free(char **table)
+{
+	free(table[3]);
+	free(table[5]);
+	free(table[4]);
+}
+
 char	*removechar(char *arg)
 {
 	char	*key;
 	char	**table;
 	char	*fermer;
-	char	*tmp0;
 
 	fermer = NULL;
 	table = (char **)malloc(sizeof(char *) * 6);
@@ -47,29 +81,22 @@ char	*removechar(char *arg)
 		return (NULL);
 	while (1)
 	{
-		key = quotes_type(arg);
-		if (arg)
-			table[1] = ft_strchr(arg, *key);
-		if (table[1][0] == '\0')
-		{
-			if (fermer == NULL)
-				return (free(key), free(table), ft_strdup(arg));
-			return (free(key), free(table), ft_strjoin_custom(fermer, arg));
-		}
-		table[2] = ft_strchr(table[1] + 1, *key) + 1;
-		tmp0 = ft_substr(arg, 0, table[1] - arg);
-		table[3] = ft_substr(arg, (table[1] - arg), (table[2] - table[1]));
-		table[4] = ft_strtrim(table[3], key);
-		table[5] = ft_strjoin_custom(tmp0, table[4]);
-		if (!fermer)
-			fermer = ft_strdup(table[5]);
-		else
-			fermer = ft_strjoin_custom(fermer, table[5]);
+		fermer = setup_table(table, arg, &key);
+		// if (io == false)
+		// {
+		// 	if (fermer == NULL)
+		// 		return (free(key), free(table), ft_strdup(arg));
+		// 	return (free(key), free(table), ft_strjoin_custom(fermer, arg));
+		// }
+		// if (!fermer)
+		// 	fermer = ft_strdup(table[5]);
+		// else
+		// 	fermer = ft_strjoin_custom(fermer, table[5]);
 		arg = table[2];
+		// setup_free(table);
 		free(table[3]);
 		free(table[5]);
 		free(table[4]);
-		free(key);
 		if (!*(table[2] + 1))
 			break ;
 	}
